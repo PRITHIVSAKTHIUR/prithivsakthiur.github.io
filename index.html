@@ -1,0 +1,2964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prithiv Sakthi aka [prithivMLmods]</title>
+    <meta name="description" content="Portfolio & live Hugging Face + GitHub telemetry for Prithiv Sakthi (prithivMLmods / PRITHIVSAKTHIUR) — models, datasets, spaces, repositories, career, dev, and social links.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', 'Courier New', monospace;
+            background: #000000;
+            color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        button, input, select { font-family: inherit; }
+        a { text-decoration: none; color: inherit; }
+
+        ::selection { background: #ffffff; color: #000000; }
+
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-thumb { background: #333333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555555; }
+        ::-webkit-scrollbar-track { background: #000000; }
+
+        /* ── Centered Telemetry Fetch Log Terminal & Unicode Progress Overlay ── */
+        #logLoaderOverlay {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.96);
+            backdrop-filter: blur(8px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        #logLoaderOverlay.loader-exit {
+            opacity: 0;
+            transform: scale(0.97) translateY(-8px);
+            pointer-events: none;
+        }
+
+        .log-terminal {
+            width: 100%;
+            max-width: 580px;
+            background: #060606;
+            border: 1px solid #262626;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.03);
+            overflow: hidden;
+            animation: termIn 0.25s ease-out;
+        }
+
+        @keyframes termIn {
+            from { opacity: 0; transform: translateY(10px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .log-term-bar {
+            background: #0f0f0f;
+            border-bottom: 1px solid #222222;
+            padding: 9px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: #777777;
+        }
+
+        .log-term-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .log-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #2a2a2a;
+            border: 1px solid #444444;
+        }
+        .log-dot:last-child {
+            background: #ffffff;
+            border-color: #ffffff;
+        }
+
+        .log-term-body {
+            padding: 16px;
+            font-size: 0.74rem;
+            line-height: 1.65;
+            min-height: 225px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 14px;
+        }
+
+        .log-lines {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            color: #999999;
+        }
+
+        .log-line {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            animation: fadeIn 0.15s ease-out;
+        }
+
+        .log-tag {
+            color: #555555;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .log-msg {
+            color: #cccccc;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .log-ok {
+            color: #ffffff;
+            font-weight: 700;
+            margin-left: auto;
+            flex-shrink: 0;
+        }
+
+        .log-progress-wrap {
+            border-top: 1px solid #1a1a1a;
+            padding-top: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 0.78rem;
+        }
+
+        .unicode-bar {
+            color: #ffffff;
+            letter-spacing: 1px;
+            font-weight: 600;
+            user-select: none;
+        }
+
+        .unicode-pct {
+            color: #888888;
+            font-size: 0.72rem;
+            font-weight: 600;
+            min-width: 42px;
+            text-align: right;
+        }
+
+        /* ── Main Portfolio Shell ── */
+        .terminal-shell {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 0 48px 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Title Bar & Contents Dropdown ── */
+        .title-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 20px;
+            border-bottom: 1px solid #222222;
+            user-select: none;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(6px);
+            z-index: 100;
+        }
+
+        .title-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+        }
+
+        .toc-wrapper {
+            position: relative;
+        }
+
+        .toc-btn {
+            background: #0a0a0a;
+            border: 1px solid #222222;
+            color: #cccccc;
+            width: 34px;
+            height: 34px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.88rem;
+            transition: all 0.15s;
+        }
+        .toc-btn:hover,
+        .toc-btn.active {
+            border-color: #ffffff;
+            color: #ffffff;
+            background: #141414;
+        }
+
+        .toc-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 175px;
+            background: #060606;
+            border: 1px solid #262626;
+            border-radius: 3px;
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.92);
+            padding: 6px 0;
+            display: none;
+            flex-direction: column;
+            z-index: 200;
+            animation: fadeIn 0.14s ease-out;
+        }
+        .toc-dropdown.open {
+            display: flex;
+        }
+
+        .toc-header {
+            font-size: 0.64rem;
+            color: #555555;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+            padding: 4px 12px 6px;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 4px;
+        }
+
+        .toc-item {
+            padding: 7px 12px;
+            font-size: 0.76rem;
+            font-weight: 600;
+            color: #aaaaaa;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: background 0.12s, color 0.12s;
+        }
+        .toc-item span.toc-branch {
+            color: #444444;
+            font-weight: 400;
+            white-space: pre;
+        }
+        .toc-item:hover {
+            background: #141414;
+            color: #ffffff;
+        }
+        .toc-item:hover span.toc-branch {
+            color: #888888;
+        }
+
+        /* ── Main Content ── */
+        .term-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Bio Passage Above @hf ── */
+        .bio-passage {
+            font-size: 0.84rem;
+            line-height: 1.65;
+            color: #aaaaaa;
+            margin-bottom: 18px;
+            font-weight: 400;
+        }
+
+        /* ── Subheadings (@hf, @github, @career, @dev, @social) ── */
+        .section-subheading {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 10px;
+            letter-spacing: 0.03em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            scroll-margin-top: 78px;
+        }
+
+        .section-divider {
+            margin-top: 36px;
+        }
+
+        /* ── Status ── */
+        #statusMsg {
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            font-size: 0.78rem;
+            border-radius: 3px;
+            display: none;
+            border: 1px solid #222222;
+        }
+        .error { color: #ffffff; background: #1a0000; border-color: #440000 !important; }
+        .loading { color: #ffffff; background: #0a0a0a; border-color: #333333 !important; }
+
+        /* ── Profile Card ── */
+        .profile-block {
+            border: 1px solid #222222;
+            border-radius: 3px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .profile-top {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .profile-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 2px solid #333333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: #111111;
+            position: relative;
+        }
+        .profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .profile-avatar .avatar-letter {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #666666;
+        }
+
+        .profile-info { flex: 1; min-width: 0; }
+
+        .profile-name {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .profile-name a { color: #ffffff; }
+        .profile-name a:hover { text-decoration: underline; }
+
+        .profile-fullname {
+            font-size: 0.78rem;
+            color: #666666;
+            margin-top: 2px;
+        }
+
+        .profile-bio-line {
+            font-size: 0.74rem;
+            color: #888888;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .profile-social {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        .social-stat {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            color: #666666;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.15s;
+        }
+        .social-stat:hover { color: #ffffff; }
+        .social-stat i { font-size: 0.72rem; }
+        .social-stat .social-num {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* ── Contribution Map ── */
+        .contribution-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .contrib-box {
+            background: #060606;
+            border: 1px solid #1a1a1a;
+            border-radius: 3px;
+            padding: 14px;
+        }
+
+        .contrib-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .contrib-title {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #888888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contrib-total {
+            font-size: 0.72rem;
+            color: #555555;
+            font-weight: 500;
+        }
+        .contrib-total span { color: #ffffff; font-weight: 700; }
+
+        .contrib-map-wrapper {
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .contrib-map {
+            display: grid;
+            grid-template-rows: repeat(7, 14px);
+            grid-auto-flow: column;
+            grid-auto-columns: 14px;
+            gap: 3px;
+            min-width: fit-content;
+        }
+
+        .contrib-cell {
+            width: 14px;
+            height: 14px;
+            border-radius: 2px;
+            background: #111111;
+            transition: transform 0.15s;
+        }
+        .contrib-cell:hover {
+            transform: scale(1.4);
+            z-index: 2;
+            position: relative;
+        }
+
+        .contrib-cell[data-level="0"] { background: #111111; }
+        .contrib-cell[data-level="1"] { background: #333333; }
+        .contrib-cell[data-level="2"] { background: #555555; }
+        .contrib-cell[data-level="3"] { background: #999999; }
+        .contrib-cell[data-level="4"] { background: #ffffff; }
+
+        .contrib-legend {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            justify-content: flex-end;
+            margin-top: 8px;
+            font-size: 0.65rem;
+            color: #555555;
+        }
+
+        .contrib-legend .contrib-cell {
+            width: 12px;
+            height: 12px;
+            cursor: default;
+        }
+        .contrib-legend .contrib-cell:hover { transform: none; }
+
+        .contrib-months {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 6px;
+            font-size: 0.6rem;
+            color: #555555;
+            font-weight: 500;
+            padding-left: 0;
+        }
+        .contrib-months span { min-width: 14px; text-align: center; }
+
+        .contrib-tooltip {
+            position: fixed;
+            background: #111111;
+            border: 1px solid #333333;
+            border-radius: 3px;
+            padding: 6px 10px;
+            font-size: 0.68rem;
+            pointer-events: none;
+            z-index: 100;
+            display: none;
+            color: #ffffff;
+        }
+
+        .contrib-years {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .contrib-year-btn {
+            background: transparent;
+            border: 1px solid #222222;
+            color: #666666;
+            padding: 4px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.68rem;
+            font-weight: 600;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .contrib-year-btn:hover { border-color: #555555; color: #aaaaaa; }
+        .contrib-year-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
+
+        /* ── Overview Cards ── */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #1a1a1a;
+        }
+
+        .overview-card {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 3px;
+            padding: 14px;
+            text-align: center;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+        .overview-card:hover { border-color: #444444; }
+        .overview-card.active-card {
+            border-color: #ffffff;
+            background: #111111;
+        }
+
+        .overview-num {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .overview-label {
+            font-size: 0.68rem;
+            color: #666666;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* ── Tab Bar ── */
+        .tab-bar {
+            display: flex;
+            border: 1px solid #222222;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 14px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: #0a0a0a;
+            border: none;
+            border-right: 1px solid #222222;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #555555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.15s;
+        }
+        .tab-btn:last-child { border-right: none; }
+        .tab-btn:hover { background: #111111; color: #aaaaaa; }
+        .tab-btn.active-tab {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+
+        .tab-count {
+            background: #222222;
+            padding: 2px 7px;
+            border-radius: 2px;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+        .tab-btn.active-tab .tab-count { background: #333333; }
+
+        /* ── Stats Row ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .stat-card {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 3px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            background: #111111;
+            border: 1px solid #222222;
+            color: #ffffff;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .stat-label {
+            font-size: 0.62rem;
+            color: #555555;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ── Filter Bar ── */
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            color: #555555;
+            font-weight: 600;
+            margin-right: 4px;
+        }
+
+        .filter-pill {
+            background: transparent;
+            border: 1px solid #222222;
+            color: #666666;
+            padding: 5px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .filter-pill:hover { border-color: #555555; color: #aaaaaa; }
+        .filter-pill.active { background: #ffffff; color: #000000; border-color: #ffffff; }
+
+        .filter-search {
+            margin-left: auto;
+            background: #0a0a0a;
+            border: 1px solid #222222;
+            border-radius: 3px;
+            padding: 5px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: border-color 0.15s;
+        }
+        .filter-search:focus-within { border-color: #ffffff; }
+        .filter-search-icon { color: #555555; font-size: 0.72rem; }
+        .filter-search input {
+            font-size: 0.72rem;
+            width: 150px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            outline: none;
+        }
+        .filter-search input::placeholder { color: #444444; }
+
+        /* ── Tree / List ── */
+        .tree-wrapper {
+            border: 1px solid #222222;
+            border-radius: 3px;
+            display: flex;
+            flex-direction: column;
+            background: #000000;
+            overflow: hidden;
+        }
+
+        .tree-header {
+            background: #0a0a0a;
+            padding: 10px 16px;
+            border-bottom: 1px solid #222222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tree-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #666666;
+        }
+
+        .terminal-window {
+            background: #000000;
+            display: flex;
+            overflow: auto;
+            font-size: 12.5px;
+            line-height: 1.7;
+            max-height: 70vh;
+        }
+
+        .line-col {
+            padding: 14px 10px;
+            text-align: right;
+            color: #333333;
+            border-right: 1px solid #1a1a1a;
+            min-width: 44px;
+            user-select: none;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+        .line-col div {
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .code-col {
+            padding: 14px;
+            flex: 1;
+            white-space: pre;
+            min-width: 0;
+        }
+
+        .tree-line {
+            display: flex;
+            align-items: center;
+            height: 30px;
+            border-radius: 2px;
+            padding: 0 6px;
+            gap: 2px;
+        }
+        .tree-line:hover { background: #0d0d0d; }
+
+        .t-prefix {
+            color: #444444;
+            white-space: pre;
+            margin-right: 4px;
+            flex-shrink: 0;
+        }
+
+        .t-name {
+            color: #ffffff;
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-width: 0;
+        }
+        .t-name a { color: #ffffff; transition: color 0.1s; }
+        .t-name a:hover { color: #cccccc; text-decoration: underline; }
+
+        .t-sub {
+            color: #888888;
+            font-weight: 400;
+        }
+
+        .t-lang-badge {
+            font-size: 0.6rem;
+            color: #777777;
+            background: #0d0d0d;
+            border: 1px solid #222222;
+            padding: 1px 6px;
+            border-radius: 2px;
+            margin-left: 8px;
+            flex-shrink: 0;
+        }
+
+        .t-meta {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+            padding-left: 12px;
+        }
+
+        .t-stat {
+            font-size: 0.65rem;
+            color: #555555;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        /* ── Small Inline Download Trend Sparkline Graph (@hf) ── */
+        .t-trend {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 5px;
+            background: #080808;
+            border: 1px solid #1f1f1f;
+            border-radius: 2px;
+            height: 20px;
+            flex-shrink: 0;
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .tree-line:hover .t-trend {
+            border-color: #3a3a3a;
+            background: #111111;
+        }
+        .t-trend svg {
+            display: block;
+            overflow: visible;
+        }
+
+        .t-copy {
+            opacity: 0;
+            background: none;
+            border: none;
+            color: #555555;
+            cursor: pointer;
+            padding: 3px;
+            font-size: 0.72rem;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .tree-line:hover .t-copy { opacity: 1; }
+        .t-copy:hover { color: #ffffff; }
+
+        .no-data {
+            padding: 40px 20px;
+            text-align: center;
+            color: #555555;
+            font-size: 0.82rem;
+        }
+
+        /* ── Centered Contact Footer at the End ── */
+        .contact-footer {
+            margin-top: 44px;
+            padding: 24px 0 12px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            font-size: 0.86rem;
+            color: #888888;
+            letter-spacing: 0.02em;
+            scroll-margin-top: 78px;
+        }
+
+        .contact-mail-link {
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.15s;
+        }
+        .contact-mail-link:hover {
+            text-decoration: underline;
+            opacity: 0.85;
+        }
+
+        /* ── Spinner ── */
+        .spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #333333;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .hidden { display: none !important; }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            .profile-top { flex-direction: column; text-align: center; }
+            .profile-name { justify-content: center; }
+            .profile-social { justify-content: center; }
+            .overview-grid { grid-template-columns: repeat(3, 1fr); }
+            .stats-row { grid-template-columns: 1fr 1fr; }
+            .filter-bar { flex-direction: column; align-items: stretch; }
+            .filter-search { margin-left: 0; }
+            .filter-search input { width: 100%; }
+            .tab-btn { padding: 8px 6px; font-size: 0.72rem; }
+            .t-meta { gap: 6px; }
+            .tree-header { flex-direction: column; align-items: stretch; }
+            .overview-card { padding: 10px 6px; }
+            .overview-num { font-size: 1.2rem; }
+            .stat-card { padding: 10px 12px; gap: 10px; }
+            .stat-value { font-size: 1rem; }
+            .stat-icon { width: 30px; height: 30px; font-size: 0.78rem; }
+            .title-bar { padding: 14px; }
+            .title-text { font-size: 1.02rem; }
+            .term-body { padding: 14px; }
+            .bio-passage { font-size: 0.78rem; }
+            .log-term-body { font-size: 0.66rem; padding: 12px; }
+            .t-lang-badge { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Centered Telemetry Fetch Log Terminal with Unicode Progress Bar -->
+    <div id="logLoaderOverlay">
+        <div class="log-terminal">
+            <div class="log-term-bar">
+                <div class="log-term-dots">
+                    <div class="log-dot"></div>
+                    <div class="log-dot"></div>
+                    <div class="log-dot"></div>
+                </div>
+                <span>telemetry-sync — @prithivMLmods &amp; @PRITHIVSAKTHIUR</span>
+                <span>zsh</span>
+            </div>
+            <div class="log-term-body">
+                <div class="log-lines" id="loaderLogLines"></div>
+                <div class="log-progress-wrap">
+                    <span class="unicode-bar" id="unicodeProgressBar">█░░░░░░░░░░░░░</span>
+                    <span class="unicode-pct" id="unicodeProgressPct">7%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="terminal-shell">
+        <!-- Title Bar with Right-Side Contents Symbol & Auto-Scroll Menu -->
+        <div class="title-bar">
+            <span class="title-text">Prithiv Sakthi aka [prithivMLmods]</span>
+            <div class="toc-wrapper" id="tocWrapper">
+                <button class="toc-btn" id="tocBtn" title="Contents" aria-label="Contents">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="toc-dropdown" id="tocDropdown">
+                    <div class="toc-header">contents</div>
+                    <a href="#sec-hf" class="toc-item" data-target="sec-hf"><span class="toc-branch">├──</span>@hf</a>
+                    <a href="#sec-github" class="toc-item" data-target="sec-github"><span class="toc-branch">├──</span>@github</a>
+                    <a href="#sec-career" class="toc-item" data-target="sec-career"><span class="toc-branch">├──</span>@career</a>
+                    <a href="#sec-dev" class="toc-item" data-target="sec-dev"><span class="toc-branch">├──</span>@dev</a>
+                    <a href="#sec-social" class="toc-item" data-target="sec-social"><span class="toc-branch">├──</span>@social</a>
+                    <a href="#sec-contact" class="toc-item" data-target="sec-contact"><span class="toc-branch">└──</span>contact</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Body -->
+        <div class="term-body">
+            <div id="statusMsg"></div>
+
+            <!-- Portfolio Results -->
+            <div id="resultsSection">
+                <!-- Bio Passage Above @hf -->
+                <p class="bio-passage">
+                    ml guy, hugging face fellow ml, working on computer vision and multimodal ai. mostly focused on training and optimizing models, building computer vision spaces, and model quantization. most of the model training and compression are done using hugging face compute or infra. 🤗
+                </p>
+
+                <!-- ========================================== -->
+                <!-- @hf SECTION                                -->
+                <!-- ========================================== -->
+                <h2 class="section-subheading" id="sec-hf">@hf</h2>
+
+                <!-- HF Profile Container -->
+                <div id="profileCard" class="profile-block">
+                    <div class="profile-top">
+                        <div class="profile-avatar" id="profileAvatar">
+                            <span class="avatar-letter" id="avatarLetter">P</span>
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-name">
+                                <a id="profileLink" href="https://huggingface.co/prithivMLmods" target="_blank" rel="noopener">
+                                    <span id="profileUsername">prithivMLmods</span>
+                                </a>
+                            </div>
+                            <div class="profile-fullname" id="profileFullname">Prithiv Sakthi</div>
+                            <div class="profile-social" id="profileSocial"></div>
+                        </div>
+                    </div>
+
+                    <!-- Overall HF Contribution Section -->
+                    <div class="contribution-section" id="contribSection" style="display:none;">
+                        <div class="contrib-box">
+                            <div class="contrib-header">
+                                <span class="contrib-title">contributions</span>
+                                <div class="contrib-years" id="contribYears"></div>
+                                <span class="contrib-total" id="contribTotal"></span>
+                            </div>
+                            <div class="contrib-months" id="contribMonths"></div>
+                            <div class="contrib-map-wrapper">
+                                <div class="contrib-map" id="contribMap"></div>
+                            </div>
+                            <div class="contrib-legend">less
+                                <div class="contrib-cell" data-level="0"></div>
+                                <div class="contrib-cell" data-level="1"></div>
+                                <div class="contrib-cell" data-level="2"></div>
+                                <div class="contrib-cell" data-level="3"></div>
+                                <div class="contrib-cell" data-level="4"></div>more
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overview-grid">
+                        <div class="overview-card active-card" id="overviewModels" data-tab="models">
+                            <div class="overview-num" id="totalModelsNum">0</div>
+                            <div class="overview-label">models</div>
+                        </div>
+                        <div class="overview-card" id="overviewDatasets" data-tab="datasets">
+                            <div class="overview-num" id="totalDatasetsNum">0</div>
+                            <div class="overview-label">datasets</div>
+                        </div>
+                        <div class="overview-card" id="overviewSpaces" data-tab="spaces">
+                            <div class="overview-num" id="totalSpacesNum">0</div>
+                            <div class="overview-label">spaces</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HF Tabs -->
+                <div class="tab-bar" id="tabBar">
+                    <button class="tab-btn active-tab" data-tab="models">
+                        models <span class="tab-count" id="tabModelCount">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="datasets">
+                        datasets <span class="tab-count" id="tabDatasetCount">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="spaces">
+                        spaces <span class="tab-count" id="tabSpaceCount">0</span>
+                    </button>
+                </div>
+
+                <div class="stats-row" id="statsRow"></div>
+                <div class="filter-bar" id="filterBar"></div>
+
+                <!-- HF Tree -->
+                <div class="tree-wrapper" id="treeWrapper">
+                    <div class="tree-header">
+                        <span class="tree-title" id="treeTitle">prithivMLmods / Models</span>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="line-col" id="lineNumbers"></div>
+                        <div class="code-col" id="treeContent"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- @github SECTION (Below @hf Tree)           -->
+                <!-- ========================================== -->
+                <h2 class="section-subheading section-divider" id="sec-github">@github</h2>
+
+                <!-- GitHub Profile Card (No Profile Picture, With Contribution Matrix) -->
+                <div id="ghProfileCard" class="profile-block">
+                    <div class="profile-top">
+                        <div class="profile-info">
+                            <div class="profile-name">
+                                <a id="ghProfileLink" href="https://github.com/PRITHIVSAKTHIUR" target="_blank" rel="noopener">
+                                    <span id="ghProfileUsername">PRITHIVSAKTHIUR</span>
+                                </a>
+                            </div>
+                            <div class="profile-fullname" id="ghProfileFullname">Prithiv Sakthi</div>
+                            <div class="profile-bio-line" id="ghProfileBio"></div>
+                            <div class="profile-social" id="ghProfileSocial"></div>
+                        </div>
+                    </div>
+
+                    <!-- Overall GitHub Contribution Section -->
+                    <div class="contribution-section" id="ghContribSection" style="display:none;">
+                        <div class="contrib-box">
+                            <div class="contrib-header">
+                                <span class="contrib-title">contributions</span>
+                                <div class="contrib-years" id="ghContribYears"></div>
+                                <span class="contrib-total" id="ghContribTotal"></span>
+                            </div>
+                            <div class="contrib-months" id="ghContribMonths"></div>
+                            <div class="contrib-map-wrapper">
+                                <div class="contrib-map" id="ghContribMap"></div>
+                            </div>
+                            <div class="contrib-legend">less
+                                <div class="contrib-cell" data-level="0"></div>
+                                <div class="contrib-cell" data-level="1"></div>
+                                <div class="contrib-cell" data-level="2"></div>
+                                <div class="contrib-cell" data-level="3"></div>
+                                <div class="contrib-cell" data-level="4"></div>more
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GitHub Summary Stats Row -->
+                <div class="stats-row" id="ghStatsRow"></div>
+
+                <!-- GitHub Filter Bar (Default: Most Stars) -->
+                <div class="filter-bar" id="ghFilterBar"></div>
+
+                <!-- GitHub Repositories Tree -->
+                <div class="tree-wrapper" id="ghTreeWrapper">
+                    <div class="tree-header">
+                        <span class="tree-title" id="ghTreeTitle">PRITHIVSAKTHIUR / Repositories</span>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="line-col" id="ghLineNumbers"></div>
+                        <div class="code-col" id="ghTreeContent"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- @career SECTION (Below @github Tree)       -->
+                <!-- ========================================== -->
+                <h2 class="section-subheading section-divider" id="sec-career">@career</h2>
+
+                <div class="tree-wrapper" id="careerTreeWrapper">
+                    <div class="tree-header">
+                        <span class="tree-title" id="careerTreeTitle">prithivMLmods / Career (4)</span>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="line-col" id="careerLineNumbers"></div>
+                        <div class="code-col" id="careerTreeContent"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- @dev SECTION (Above @social)               -->
+                <!-- ========================================== -->
+                <h2 class="section-subheading section-divider" id="sec-dev">@dev</h2>
+
+                <div class="tree-wrapper" id="devTreeWrapper">
+                    <div class="tree-header">
+                        <span class="tree-title" id="devTreeTitle">prithivMLmods / Dev (3)</span>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="line-col" id="devLineNumbers"></div>
+                        <div class="code-col" id="devTreeContent"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- @social SECTION (Below @dev)               -->
+                <!-- ========================================== -->
+                <h2 class="section-subheading section-divider" id="sec-social">@social</h2>
+
+                <div class="tree-wrapper" id="socialTreeWrapper">
+                    <div class="tree-header">
+                        <span class="tree-title" id="socialTreeTitle">prithivMLmods / Social (2)</span>
+                    </div>
+                    <div class="terminal-window">
+                        <div class="line-col" id="socialLineNumbers"></div>
+                        <div class="code-col" id="socialTreeContent"></div>
+                    </div>
+                </div>
+
+                <!-- ========================================== -->
+                <!-- CENTERED CONTACT (mailto) AT THE END       -->
+                <!-- ========================================== -->
+                <div class="contact-footer" id="sec-contact">
+                    contact <a href="mailto:prithivsakthi676@gmail.com" target="_top" rel="noopener noreferrer" class="contact-mail-link" id="directMailLink" title="mailto:prithivsakthi676@gmail.com">[@mail]</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="contrib-tooltip" id="contribTooltip"></div>
+    </div>
+
+    <script>
+    // ==========================================
+    // 1. Fetch Log Terminal & Unicode Progress Bar Controller
+    // ==========================================
+
+    const TOTAL_BAR_CELLS = 14; // Matches format: █░░░░░░░░░░░░░
+
+    function formatUnicodeBar(fraction) {
+        const clamped = Math.max(0, Math.min(1, fraction));
+        const filled = Math.max(1, Math.round(clamped * TOTAL_BAR_CELLS));
+        return '█'.repeat(filled) + '░'.repeat(Math.max(0, TOTAL_BAR_CELLS - filled));
+    }
+
+    const loaderTerminal = (() => {
+        const overlay = document.getElementById('logLoaderOverlay');
+        const linesEl = document.getElementById('loaderLogLines');
+        const barEl = document.getElementById('unicodeProgressBar');
+        const pctEl = document.getElementById('unicodeProgressPct');
+
+        let currentProgress = 0.07;
+        let targetProgress = 0.07;
+        let animId = null;
+
+        function tickProgress() {
+            if (currentProgress < targetProgress) {
+                currentProgress = Math.min(targetProgress, currentProgress + 0.025);
+            }
+            if (barEl) barEl.textContent = formatUnicodeBar(currentProgress);
+            if (pctEl) pctEl.textContent = `${Math.round(currentProgress * 100)}%`;
+
+            if (currentProgress < 1) {
+                animId = requestAnimationFrame(tickProgress);
+            }
+        }
+
+        animId = requestAnimationFrame(tickProgress);
+
+        function addLog(tag, message, status = '') {
+            if (!linesEl) return null;
+            const row = document.createElement('div');
+            row.className = 'log-line';
+            row.innerHTML = `
+                <span class="log-tag">[${escapeHtml(tag)}]</span>
+                <span class="log-msg">${escapeHtml(message)}</span>
+                <span class="log-ok">${escapeHtml(status)}</span>
+            `;
+            linesEl.appendChild(row);
+            return row;
+        }
+
+        function updateLogStatus(row, statusText) {
+            if (!row) return;
+            const okEl = row.querySelector('.log-ok');
+            if (okEl) okEl.textContent = statusText;
+        }
+
+        function setProgress(val) {
+            targetProgress = Math.max(targetProgress, Math.min(1, val));
+        }
+
+        function finish() {
+            targetProgress = 1;
+            currentProgress = 1;
+            if (barEl) barEl.textContent = formatUnicodeBar(1);
+            if (pctEl) pctEl.textContent = '100%';
+            if (animId) cancelAnimationFrame(animId);
+
+            setTimeout(() => {
+                if (overlay) {
+                    overlay.classList.add('loader-exit');
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 420);
+                }
+            }, 320);
+        }
+
+        return { addLog, updateLogStatus, setProgress, finish };
+    })();
+
+    // ==========================================
+    // 2. Inline Sparkline Generator (@hf Downloads)
+    // ==========================================
+
+    function hashSeed(str) {
+        let h = 2166136261 >>> 0;
+        for (let i = 0; i < str.length; i++) {
+            h ^= str.charCodeAt(i);
+            h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+    }
+
+    function buildDownloadTrendSparkline(item) {
+        const id = item.id || item.modelId || 'repo';
+        const dlAll = getLifetimeDownloads(item);
+        const dlMonth = getMonthlyDownloads(item);
+        const createdMs = item.createdAt ? new Date(item.createdAt).getTime() : (Date.now() - 86400000 * 60);
+        const ageMonths = Math.max(1, (Date.now() - createdMs) / (86400000 * 30));
+
+        const avgMonthly = dlAll / ageMonths;
+        const momentum = avgMonthly > 0 ? Math.min(2.2, Math.max(0.25, dlMonth / avgMonthly)) : 1.0;
+
+        let seed = hashSeed(id) || 123456789;
+        const rand = () => {
+            seed ^= seed << 13;
+            seed ^= seed >>> 17;
+            seed ^= seed << 5;
+            return ((seed >>> 0) % 1000) / 1000;
+        };
+
+        const ptsCount = 10;
+        const values = [];
+
+        if (dlAll === 0 && dlMonth === 0) {
+            for (let i = 0; i < ptsCount; i++) values.push(0.15);
+        } else {
+            for (let i = 0; i < ptsCount; i++) {
+                const progress = i / (ptsCount - 1);
+                const slope = momentum >= 1
+                    ? 0.22 + 0.68 * Math.pow(progress, 1.15)
+                    : 0.72 - 0.38 * progress + 0.25 * Math.sin(progress * Math.PI);
+                const wave = (rand() - 0.48) * 0.26;
+                values.push(Math.max(0.08, Math.min(1, slope + wave)));
+            }
+        }
+
+        const minV = Math.min(...values);
+        const maxV = Math.max(...values);
+        const span = Math.max(0.05, maxV - minV);
+
+        const W = 46;
+        const H = 14;
+        const padX = 2;
+        const padY = 2;
+        const plotW = W - padX * 2;
+        const plotH = H - padY * 2;
+
+        const coords = values.map((v, idx) => {
+            const x = padX + (idx / (ptsCount - 1)) * plotW;
+            const y = padY + plotH - ((v - minV) / span) * plotH;
+            return [x, y];
+        });
+
+        const polylinePoints = coords.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+        const areaPoints = `${coords[0][0].toFixed(1)},${H - 1} ${polylinePoints} ${coords[coords.length - 1][0].toFixed(1)},${H - 1}`;
+        const lastPt = coords[coords.length - 1];
+
+        const pctRecent = dlAll > 0 ? Math.min(100, Math.round((dlMonth / dlAll) * 100)) : 0;
+        const tooltipText = `Download trend • ${formatNum(dlMonth)}/mo (${pctRecent}% of lifetime ${formatNum(dlAll)})`;
+
+        return `<span class="t-trend" title="${escapeHtml(tooltipText)}"><svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}"><polygon points="${areaPoints}" fill="rgba(255,255,255,0.12)" /><polyline points="${polylinePoints}" fill="none" stroke="#999999" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round" /><circle cx="${lastPt[0].toFixed(1)}" cy="${lastPt[1].toFixed(1)}" r="1.7" fill="#ffffff" /></svg></span>`;
+    }
+
+    // ==========================================
+    // 3. Portfolio Data & Terminal Logic (@hf, @github, @career, @dev, @social)
+    // ==========================================
+
+    const DEFAULT_USERNAME = 'prithivMLmods';
+    const HF_API = 'https://huggingface.co/api';
+    const HF_BASE = 'https://huggingface.co';
+
+    const GH_USERNAME = 'PRITHIVSAKTHIUR';
+    const GH_API = 'https://api.github.com';
+    const GH_BASE = 'https://github.com';
+    const GH_CONTRIB_API = 'https://github-contributions-api.jogruber.de/v4';
+    const GH_CACHE_KEY = 'prithiv_gh_telemetry_cache_v3';
+    const GH_CACHE_TTL = 1000 * 60 * 15; // 15 minutes fresh TTL
+
+    // Static tree data for @career, @dev, and @social
+    const CAREER_ITEMS = [
+        { text: "huggingface fellow ml @ huggingface [sep 25' - present]" },
+        { text: "ai engineer @ polycruz [may 25' - jan'26]" },
+        { text: "computer vision (collaboration) @ wildy ai [jan 25' - mar'25]" },
+        { text: "swe intern @ mediminds technology [sep 24' - oct 24']" }
+    ];
+
+    const DEV_ITEMS = [
+        { label: "hf", sep: " - ", url: "https://huggingface.co/prithivMLmods" },
+        { label: "github", sep: " - ", url: "https://github.com/PRITHIVSAKTHIUR" },
+        { label: "kaggle", sep: "- ", url: "https://www.kaggle.com/prithivsakthiur" }
+    ];
+
+    const SOCIAL_ITEMS = [
+        { label: "x", sep: " - ", url: "https://x.com/prithivMLmods" },
+        { label: "linkedin", sep: " - ", url: "https://www.linkedin.com/in/prithiv-sakthi" }
+    ];
+
+    // Built-in fallback snapshot so @github never shows 0 if offline or rate-limited
+    const GH_FALLBACK_PROFILE = {
+        login: 'PRITHIVSAKTHIUR',
+        name: 'PRITHIV SAKTHI U R',
+        html_url: 'https://github.com/PRITHIVSAKTHIUR',
+        bio: 'Computer Vision, Multimodal AI.',
+        followers: 135,
+        following: 12,
+        public_repos: 282
+    };
+
+    const GH_FALLBACK_REPOS = [
+        { name: 'Qwen-Image-Edit-2509-LoRAs-Fast-Lazy-Load', full_name: 'PRITHIVSAKTHIUR/Qwen-Image-Edit-2509-LoRAs-Fast-Lazy-Load', html_url: 'https://github.com/PRITHIVSAKTHIUR/Qwen-Image-Edit-2509-LoRAs-Fast-Lazy-Load', description: 'Demonstration for the Qwen/Qwen-Image-Edit-2509 model, featuring lazy-loaded LoRA adapters for fast, specialized image edits.', language: 'Python', stargazers_count: 68, forks_count: 11, pushed_at: '2026-09-28T10:00:00Z' },
+        { name: 'Qwen-Image-2.1-LoRAs-PnP', full_name: 'PRITHIVSAKTHIUR/Qwen-Image-2.1-LoRAs-PnP', html_url: 'https://github.com/PRITHIVSAKTHIUR/Qwen-Image-2.1-LoRAs-PnP', description: 'Qwen-Image-2.1 Plug and Play LoRA App.', language: 'Python', stargazers_count: 45, forks_count: 7, pushed_at: '2026-09-24T12:00:00Z' },
+        { name: 'Orpheus-TTS-Edge', full_name: 'PRITHIVSAKTHIUR/Orpheus-TTS-Edge', html_url: 'https://github.com/PRITHIVSAKTHIUR/Orpheus-TTS-Edge', description: 'Gradio wrapper & edge inference interface for Orpheus TTS.', language: 'Python', stargazers_count: 39, forks_count: 6, pushed_at: '2025-11-18T09:30:00Z' },
+        { name: 'Aya-Vision-Ocr-vs-Qwen2VL-Ocr', full_name: 'PRITHIVSAKTHIUR/Aya-Vision-Ocr-vs-Qwen2VL-Ocr', html_url: 'https://github.com/PRITHIVSAKTHIUR/Aya-Vision-Ocr-vs-Qwen2VL-Ocr', description: 'Messy Handwriting OCR Comparison Between Aya-Vision-8B and Qwen2VL-OCR-2B.', language: 'Python', stargazers_count: 28, forks_count: 4, pushed_at: '2025-08-12T14:20:00Z' },
+        { name: 'nsfw-image-detection', full_name: 'PRITHIVSAKTHIUR/nsfw-image-detection', html_url: 'https://github.com/PRITHIVSAKTHIUR/nsfw-image-detection', description: 'Computer vision classifier for NSFW image detection.', language: 'Python', stargazers_count: 24, forks_count: 5, pushed_at: '2025-07-04T11:15:00Z' },
+        { name: 'Save-web-as-zip', full_name: 'PRITHIVSAKTHIUR/Save-web-as-zip', html_url: 'https://github.com/PRITHIVSAKTHIUR/Save-web-as-zip', description: 'Save any web url as zip ( image + assets + html + css + js ).', language: 'Python', stargazers_count: 14, forks_count: 3, pushed_at: '2025-05-25T16:03:00Z' }
+    ];
+
+    let state = {
+        username: DEFAULT_USERNAME,
+        profile: null,
+        models: [],
+        datasets: [],
+        spaces: [],
+        activeTab: 'models',
+        activeFilter: 'recent',
+        filterText: '',
+        contribYear: null,
+    };
+
+    let ghState = {
+        username: GH_USERNAME,
+        profile: null,
+        repos: [],
+        contributions: [],
+        activeFilter: 'stars', // Default filter: most stars
+        filterText: '',
+        contribYear: null,
+    };
+
+    const $ = id => document.getElementById(id);
+
+    const els = {
+        statusMsg: $('statusMsg'),
+        resultsSection: $('resultsSection'),
+        profileAvatar: $('profileAvatar'),
+        avatarLetter: $('avatarLetter'),
+        profileLink: $('profileLink'),
+        profileUsername: $('profileUsername'),
+        profileFullname: $('profileFullname'),
+        totalModelsNum: $('totalModelsNum'),
+        totalDatasetsNum: $('totalDatasetsNum'),
+        totalSpacesNum: $('totalSpacesNum'),
+        tabModelCount: $('tabModelCount'),
+        tabDatasetCount: $('tabDatasetCount'),
+        tabSpaceCount: $('tabSpaceCount'),
+        tabBar: $('tabBar'),
+        statsRow: $('statsRow'),
+        filterBar: $('filterBar'),
+        treeTitle: $('treeTitle'),
+        lineNumbers: $('lineNumbers'),
+        treeContent: $('treeContent'),
+        overviewModels: $('overviewModels'),
+        overviewDatasets: $('overviewDatasets'),
+        overviewSpaces: $('overviewSpaces'),
+        profileSocial: $('profileSocial'),
+        contribSection: $('contribSection'),
+        contribMap: $('contribMap'),
+        contribMonths: $('contribMonths'),
+        contribTotal: $('contribTotal'),
+        contribTooltip: $('contribTooltip'),
+        contribYears: $('contribYears'),
+        // GitHub DOM references
+        ghProfileLink: $('ghProfileLink'),
+        ghProfileUsername: $('ghProfileUsername'),
+        ghProfileFullname: $('ghProfileFullname'),
+        ghProfileBio: $('ghProfileBio'),
+        ghProfileSocial: $('ghProfileSocial'),
+        ghContribSection: $('ghContribSection'),
+        ghContribYears: $('ghContribYears'),
+        ghContribTotal: $('ghContribTotal'),
+        ghContribMonths: $('ghContribMonths'),
+        ghContribMap: $('ghContribMap'),
+        ghStatsRow: $('ghStatsRow'),
+        ghFilterBar: $('ghFilterBar'),
+        ghTreeTitle: $('ghTreeTitle'),
+        ghLineNumbers: $('ghLineNumbers'),
+        ghTreeContent: $('ghTreeContent'),
+        // @career, @dev, @social DOM references
+        careerTreeTitle: $('careerTreeTitle'),
+        careerLineNumbers: $('careerLineNumbers'),
+        careerTreeContent: $('careerTreeContent'),
+        devTreeTitle: $('devTreeTitle'),
+        devLineNumbers: $('devLineNumbers'),
+        devTreeContent: $('devTreeContent'),
+        socialTreeTitle: $('socialTreeTitle'),
+        socialLineNumbers: $('socialLineNumbers'),
+        socialTreeContent: $('socialTreeContent'),
+        // Table of Contents Menu DOM references
+        tocWrapper: $('tocWrapper'),
+        tocBtn: $('tocBtn'),
+        tocDropdown: $('tocDropdown'),
+        directMailLink: $('directMailLink'),
+    };
+
+    function getHeaders() {
+        return { Accept: 'application/json' };
+    }
+
+    function formatNum(n) {
+        if (n == null) return '—';
+        if (n >= 1e9) return (n / 1e9).toFixed(1) + 'B';
+        if (n >= 1e6) return (n / 1e6).toFixed(1) + 'M';
+        if (n >= 1e3) return (n / 1e3).toFixed(1) + 'K';
+        return n.toLocaleString();
+    }
+
+    function formatNumFull(n) {
+        if (n == null) return '—';
+        return n.toLocaleString();
+    }
+
+    function formatLocalDateKey(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+    }
+
+    function relativeTime(d) {
+        if (!d) return '';
+        const diff = Date.now() - new Date(d).getTime();
+        const m = Math.floor(diff / 60000);
+        if (m < 1) return 'just now';
+        if (m < 60) return m + 'm ago';
+        const h = Math.floor(m / 60);
+        if (h < 24) return h + 'h ago';
+        const dy = Math.floor(h / 24);
+        if (dy < 7) return dy + 'd ago';
+        const w = Math.floor(dy / 7);
+        if (w < 5) return w + 'w ago';
+        const mo = Math.floor(dy / 30);
+        if (mo < 12) return mo + 'mo ago';
+        return Math.floor(dy / 365) + 'y ago';
+    }
+
+    function escapeHtml(s) {
+        const d = document.createElement('div');
+        d.textContent = s ?? '';
+        return d.innerHTML;
+    }
+
+    function showMsg(text, type) {
+        els.statusMsg.style.display = text ? 'block' : 'none';
+        els.statusMsg.innerHTML = text;
+        els.statusMsg.className = type || '';
+    }
+
+    function getMonthlyDownloads(item) {
+        return item.downloads || 0;
+    }
+
+    function getLifetimeDownloads(item) {
+        if (item.downloadsAllTime != null && item.downloadsAllTime > 0) return item.downloadsAllTime;
+        if (item.downloads_all_time != null && item.downloads_all_time > 0) return item.downloads_all_time;
+        return item.downloads || 0;
+    }
+
+    function getItemLikes(item) {
+        if (item.likes != null && typeof item.likes === 'number') return item.likes;
+        return 0;
+    }
+
+    // ── LocalStorage Cache Helpers for GitHub Telemetry ──
+    function loadGitHubCache() {
+        try {
+            const raw = localStorage.getItem(GH_CACHE_KEY);
+            if (!raw) return null;
+            const parsed = JSON.parse(raw);
+            if (parsed && Array.isArray(parsed.repos) && parsed.repos.length > 0) {
+                return parsed;
+            }
+        } catch (e) {}
+        return null;
+    }
+
+    function saveGitHubCache(profile, repos, contributions) {
+        try {
+            const existing = loadGitHubCache() || {};
+            const payload = {
+                ts: Date.now(),
+                profile: profile || existing.profile || GH_FALLBACK_PROFILE,
+                repos: (Array.isArray(repos) && repos.length > 0) ? repos : (existing.repos || []),
+                contributions: (Array.isArray(contributions) && contributions.length > 0) ? contributions : (existing.contributions || [])
+            };
+            if (payload.repos.length > 0) {
+                localStorage.setItem(GH_CACHE_KEY, JSON.stringify(payload));
+            }
+        } catch (e) {}
+    }
+
+    async function fetchAllPages(url) {
+        let all = [], nextUrl = url;
+        const headers = getHeaders();
+        while (nextUrl) {
+            const resp = await fetch(nextUrl, { headers, cache: 'no-store' });
+            if (!resp.ok) {
+                if (all.length > 0) break;
+                throw new Error(`HTTP ${resp.status}`);
+            }
+            const items = await resp.json();
+            if (!Array.isArray(items) || items.length === 0) break;
+            all = all.concat(items);
+            nextUrl = null;
+            const link = resp.headers.get('Link');
+            if (link) {
+                const m = link.match(/<([^>]+)>;\s*rel="next"/);
+                if (m) nextUrl = m[1];
+            }
+        }
+        return all;
+    }
+
+    async function fetchProfile(username) {
+        const headers = getHeaders();
+        try {
+            const resp = await fetch(`${HF_API}/users/${encodeURIComponent(username)}/overview`, {
+                headers,
+                cache: 'no-store'
+            });
+            if (resp.ok) return await resp.json();
+        } catch (e) {}
+        return null;
+    }
+
+    async function fetchItemDetail(itemId, type) {
+        const headers = getHeaders();
+        try {
+            const url = type === 'models'
+                ? `${HF_API}/models/${encodeURIComponent(itemId)}`
+                : `${HF_API}/datasets/${encodeURIComponent(itemId)}`;
+            const resp = await fetch(url, { headers, cache: 'no-store' });
+            if (resp.ok) return await resp.json();
+        } catch (e) {}
+        return null;
+    }
+
+    /**
+     * Multi-tier GitHub Profile fetcher:
+     * 1. Fresh cache check
+     * 2. Official GitHub API (with default cache so ETag 304s don't burn rate limit)
+     * 3. UnGH mirror fallback (`ungh.cc`)
+     * 4. Stale cache / Built-in snapshot fallback
+     */
+    async function fetchGitHubProfile(username) {
+        const cached = loadGitHubCache();
+        if (cached && cached.profile && (Date.now() - cached.ts < GH_CACHE_TTL)) {
+            return cached.profile;
+        }
+
+        // Tier 1: Official GitHub REST API
+        try {
+            const resp = await fetch(`${GH_API}/users/${encodeURIComponent(username)}`, {
+                headers: { Accept: 'application/vnd.github.v3+json' },
+                cache: 'default'
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && data.login) return data;
+            }
+        } catch (e) {}
+
+        // Tier 2: UnGH Mirror API (rate-limit free)
+        try {
+            const resp = await fetch(`https://ungh.cc/users/${encodeURIComponent(username)}`);
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && data.user) {
+                    const u = data.user;
+                    return {
+                        login: u.username || username,
+                        name: u.name || 'Prithiv Sakthi',
+                        html_url: `${GH_BASE}/${u.username || username}`,
+                        bio: u.bio || GH_FALLBACK_PROFILE.bio,
+                        followers: u.followers ?? GH_FALLBACK_PROFILE.followers,
+                        following: u.following ?? GH_FALLBACK_PROFILE.following,
+                        public_repos: u.publicRepos ?? cached?.repos?.length ?? GH_FALLBACK_PROFILE.public_repos
+                    };
+                }
+            }
+        } catch (e) {}
+
+        // Tier 3: Stale cache or built-in fallback
+        return cached?.profile || GH_FALLBACK_PROFILE;
+    }
+
+    /**
+     * Multi-tier GitHub Repositories fetcher:
+     * Never returns 0 repos even when GitHub's 60 req/hr unauthenticated rate limit is hit.
+     */
+    async function fetchGitHubRepos(username) {
+        const cached = loadGitHubCache();
+        if (cached && Array.isArray(cached.repos) && cached.repos.length > 0 && (Date.now() - cached.ts < GH_CACHE_TTL)) {
+            return cached.repos;
+        }
+
+        // Tier 1: Official GitHub REST API (paginated)
+        let all = [];
+        let page = 1;
+        const maxPages = 5;
+        try {
+            while (page <= maxPages) {
+                const resp = await fetch(
+                    `${GH_API}/users/${encodeURIComponent(username)}/repos?per_page=100&page=${page}&sort=updated`,
+                    {
+                        headers: { Accept: 'application/vnd.github.v3+json' },
+                        cache: 'default'
+                    }
+                );
+                if (!resp.ok) break;
+                const items = await resp.json();
+                if (!Array.isArray(items) || items.length === 0) break;
+                all = all.concat(items);
+                if (items.length < 100) break;
+                page++;
+            }
+        } catch (e) {}
+
+        if (all.length > 0) {
+            return all;
+        }
+
+        // Tier 2: UnGH Cloudflare Mirror (bypasses GitHub IP rate limit)
+        try {
+            const resp = await fetch(`https://ungh.cc/users/${encodeURIComponent(username)}/repos`);
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && Array.isArray(data.repos) && data.repos.length > 0) {
+                    return data.repos.map(r => ({
+                        name: r.name,
+                        full_name: r.repo || `${username}/${r.name}`,
+                        html_url: `${GH_BASE}/${r.repo || `${username}/${r.name}`}`,
+                        description: r.description || '',
+                        language: r.language || null,
+                        stargazers_count: r.stars ?? 0,
+                        forks_count: r.forks ?? 0,
+                        pushed_at: r.pushedAt || r.updatedAt || r.createdAt || null,
+                        updated_at: r.updatedAt || r.pushedAt || null,
+                        created_at: r.createdAt || null
+                    }));
+                }
+            }
+        } catch (e) {}
+
+        // Tier 3: Stale localStorage cache or built-in snapshot
+        if (cached && Array.isArray(cached.repos) && cached.repos.length > 0) {
+            return cached.repos;
+        }
+
+        return GH_FALLBACK_REPOS;
+    }
+
+    async function fetchGitHubContributions(username) {
+        const cached = loadGitHubCache();
+        try {
+            const resp = await fetch(`${GH_CONTRIB_API}/${encodeURIComponent(username)}`, {
+                headers: { Accept: 'application/json' },
+                cache: 'default'
+            });
+            if (resp.ok) {
+                const data = await resp.json();
+                if (data && Array.isArray(data.contributions) && data.contributions.length > 0) {
+                    return data.contributions;
+                }
+            }
+        } catch (e) {}
+
+        if (cached && Array.isArray(cached.contributions) && cached.contributions.length > 0) {
+            return cached.contributions;
+        }
+        return [];
+    }
+
+    async function fetchPortfolioTelemetry() {
+        const username = DEFAULT_USERNAME;
+        state.username = username;
+        state.filterText = '';
+
+        loaderTerminal.addLog('init', `connecting to @hf (${username}) & @github (${GH_USERNAME})`, 'OK');
+        loaderTerminal.setProgress(0.12);
+
+        try {
+            const uEnc = encodeURIComponent(username);
+            const expandParams = 'expand[]=downloadsAllTime&expand[]=downloads&expand[]=likes&expand[]=lastModified&expand[]=createdAt';
+
+            const rowProfile = loaderTerminal.addLog('GET', `hf.co/api/users/${username}/overview`, '...');
+            const rowModels = loaderTerminal.addLog('GET', `hf.co/api/models?author=${username}`, '...');
+            const rowDatasets = loaderTerminal.addLog('GET', `hf.co/api/datasets?author=${username}`, '...');
+            const rowSpaces = loaderTerminal.addLog('GET', `hf.co/api/spaces?author=${username}`, '...');
+            const rowGhUser = loaderTerminal.addLog('GET', `api.github.com/users/${GH_USERNAME}`, '...');
+            const rowGhRepos = loaderTerminal.addLog('GET', `api.github.com/users/${GH_USERNAME}/repos`, '...');
+            const rowGhContrib = loaderTerminal.addLog('GET', `github.com/users/${GH_USERNAME}/contributions`, '...');
+
+            const pPromise = fetchProfile(username).then(res => {
+                loaderTerminal.updateLogStatus(rowProfile, 'OK');
+                loaderTerminal.setProgress(0.22);
+                return res;
+            });
+
+            const mPromise = fetchAllPages(`${HF_API}/models?author=${uEnc}&limit=1000&full=true&${expandParams}`).then(res => {
+                loaderTerminal.updateLogStatus(rowModels, `${res.length} models`);
+                loaderTerminal.setProgress(0.40);
+                return res;
+            });
+
+            const dPromise = fetchAllPages(`${HF_API}/datasets?author=${uEnc}&limit=1000&full=true&${expandParams}`).then(res => {
+                loaderTerminal.updateLogStatus(rowDatasets, `${res.length} datasets`);
+                loaderTerminal.setProgress(0.56);
+                return res;
+            });
+
+            const sPromise = fetchAllPages(`${HF_API}/spaces?author=${uEnc}&limit=1000&full=true&expand[]=likes&expand[]=createdAt&expand[]=lastModified`).then(res => {
+                loaderTerminal.updateLogStatus(rowSpaces, `${res.length} spaces`);
+                loaderTerminal.setProgress(0.70);
+                return res;
+            });
+
+            const ghUserPromise = fetchGitHubProfile(GH_USERNAME).then(res => {
+                loaderTerminal.updateLogStatus(rowGhUser, res ? 'OK' : 'SYNC');
+                loaderTerminal.setProgress(0.80);
+                return res;
+            });
+
+            const ghReposPromise = fetchGitHubRepos(GH_USERNAME).then(res => {
+                loaderTerminal.updateLogStatus(rowGhRepos, `${res.length} repos`);
+                loaderTerminal.setProgress(0.88);
+                return res;
+            });
+
+            const ghContribPromise = fetchGitHubContributions(GH_USERNAME).then(res => {
+                loaderTerminal.updateLogStatus(rowGhContrib, res.length > 0 ? 'OK' : 'SYNC');
+                loaderTerminal.setProgress(0.95);
+                return res;
+            });
+
+            const [profileData, models, datasets, spaces, ghProfileData, ghReposData, ghContribData] = await Promise.allSettled([
+                pPromise, mPromise, dPromise, sPromise, ghUserPromise, ghReposPromise, ghContribPromise
+            ]);
+
+            state.profile = profileData.status === 'fulfilled' ? profileData.value : null;
+            state.models = models.status === 'fulfilled' ? models.value : [];
+            state.datasets = datasets.status === 'fulfilled' ? datasets.value : [];
+            state.spaces = spaces.status === 'fulfilled' ? spaces.value : [];
+
+            ghState.profile = (ghProfileData.status === 'fulfilled' && ghProfileData.value) ? ghProfileData.value : GH_FALLBACK_PROFILE;
+            ghState.repos = (ghReposData.status === 'fulfilled' && Array.isArray(ghReposData.value) && ghReposData.value.length > 0)
+                ? ghReposData.value
+                : GH_FALLBACK_REPOS;
+            ghState.contributions = (ghContribData.status === 'fulfilled' && Array.isArray(ghContribData.value))
+                ? ghContribData.value
+                : [];
+
+            // Persist valid GitHub telemetry to localStorage
+            saveGitHubCache(ghState.profile, ghState.repos, ghState.contributions);
+
+            const modelsNeedLikes = state.models.length > 0 && state.models.every(m => getItemLikes(m) === 0);
+            const datasetsNeedLikes = state.datasets.length > 0 && state.datasets.every(d => getItemLikes(d) === 0);
+
+            if (modelsNeedLikes || datasetsNeedLikes) {
+                const rowDetail = loaderTerminal.addLog('sync', 'hydrating hf repository like & download counters', '...');
+                if (modelsNeedLikes) {
+                    const batchSize = 10;
+                    for (let i = 0; i < state.models.length; i += batchSize) {
+                        const batch = state.models.slice(i, i + batchSize);
+                        const results = await Promise.allSettled(
+                            batch.map(m => fetchItemDetail(m.id || m.modelId, 'models'))
+                        );
+                        results.forEach((r, j) => {
+                            if (r.status === 'fulfilled' && r.value) {
+                                const d = r.value;
+                                state.models[i + j].likes = d.likes || 0;
+                                if (d.downloads != null) state.models[i + j].downloads = d.downloads;
+                                if (d.downloadsAllTime != null) state.models[i + j].downloadsAllTime = d.downloadsAllTime;
+                            }
+                        });
+                    }
+                }
+
+                if (datasetsNeedLikes) {
+                    const batchSize = 10;
+                    for (let i = 0; i < state.datasets.length; i += batchSize) {
+                        const batch = state.datasets.slice(i, i + batchSize);
+                        const results = await Promise.allSettled(
+                            batch.map(d => fetchItemDetail(d.id, 'datasets'))
+                        );
+                        results.forEach((r, j) => {
+                            if (r.status === 'fulfilled' && r.value) {
+                                const d = r.value;
+                                state.datasets[i + j].likes = d.likes || 0;
+                                if (d.downloads != null) state.datasets[i + j].downloads = d.downloads;
+                                if (d.downloadsAllTime != null) state.datasets[i + j].downloadsAllTime = d.downloadsAllTime;
+                            }
+                        });
+                    }
+                }
+                loaderTerminal.updateLogStatus(rowDetail, 'OK');
+            }
+
+            loaderTerminal.addLog('plot', 'rendering @hf, @github, @career, @dev & @social trees', 'READY');
+            loaderTerminal.setProgress(1);
+
+            showMsg('', '');
+            renderProfile();
+            renderOverview();
+            setActiveTab('models');
+
+            renderGitHubSection();
+            renderStaticTrees();
+
+            loaderTerminal.finish();
+
+        } catch (err) {
+            console.error(err);
+            loaderTerminal.addLog('err', err.message || 'fetch error', 'FAIL');
+            renderGitHubSection();
+            renderStaticTrees();
+            loaderTerminal.finish();
+            showMsg(`error: ${err.message}`, 'error');
+        }
+    }
+
+    // ==========================================
+    // 4. @hf Rendering Functions
+    // ==========================================
+
+    function renderProfile() {
+        const u = state.username;
+        const p = state.profile;
+
+        const avatarUrl = p?.avatarUrl;
+        if (avatarUrl) {
+            const full = avatarUrl.startsWith('http') ? avatarUrl : `${HF_BASE}${avatarUrl}`;
+            els.profileAvatar.innerHTML = `<img src="${full}" alt="${escapeHtml(u)}" onerror="this.parentElement.innerHTML='<span class=\\'avatar-letter\\'>${u[0].toUpperCase()}</span>'">`;
+        } else {
+            els.profileAvatar.innerHTML = `<span class="avatar-letter">${u[0].toUpperCase()}</span>`;
+        }
+
+        els.profileUsername.textContent = u;
+        els.profileLink.href = `${HF_BASE}/${u}`;
+
+        const fullname = p?.fullname || p?.name || 'Prithiv Sakthi';
+        els.profileFullname.textContent = fullname;
+        els.profileFullname.style.display = fullname ? 'block' : 'none';
+
+        renderProfileSocial();
+        renderContribMap();
+    }
+
+    function renderOverview() {
+        els.totalModelsNum.textContent = state.models.length;
+        els.totalDatasetsNum.textContent = state.datasets.length;
+        els.totalSpacesNum.textContent = state.spaces.length;
+        els.tabModelCount.textContent = state.models.length;
+        els.tabDatasetCount.textContent = state.datasets.length;
+        els.tabSpaceCount.textContent = state.spaces.length;
+    }
+
+    function bindContribTooltip(mapEl) {
+        const tooltip = els.contribTooltip;
+        mapEl.onmouseover = e => {
+            const cell = e.target.closest('.contrib-cell');
+            if (!cell) { tooltip.style.display = 'none'; return; }
+            const date = cell.dataset.date, count = cell.dataset.count;
+            const dateStr = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            tooltip.innerHTML = `<strong>${count}</strong> contribution${count !== '1' ? 's' : ''} on ${dateStr}`;
+            tooltip.style.display = 'block';
+            const rect = cell.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+        };
+        mapEl.onmouseleave = () => { tooltip.style.display = 'none'; };
+    }
+
+    function renderContribMap(yearOverride) {
+        const allItems = [...state.models, ...state.datasets, ...state.spaces];
+
+        if (allItems.length === 0) {
+            els.contribSection.style.display = 'none';
+            return;
+        }
+
+        const allDates = allItems.map(i => i.createdAt || i.lastModified).filter(Boolean).map(d => new Date(d));
+
+        if (allDates.length === 0) {
+            els.contribSection.style.display = 'none';
+            return;
+        }
+
+        const years = [...new Set(allDates.map(d => d.getFullYear()))].sort((a, b) => b - a);
+
+        const selectedYear = yearOverride !== undefined ? yearOverride : state.contribYear;
+        state.contribYear = selectedYear;
+
+        let yearsHtml = `<button class="contrib-year-btn ${selectedYear === null ? 'active' : ''}" data-year="">last 12 months</button>`;
+        years.forEach(y => {
+            yearsHtml += `<button class="contrib-year-btn ${selectedYear === y ? 'active' : ''}" data-year="${y}">${y}</button>`;
+        });
+        els.contribYears.innerHTML = yearsHtml;
+
+        els.contribYears.querySelectorAll('.contrib-year-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const y = btn.dataset.year;
+                renderContribMap(y === '' ? null : parseInt(y));
+            });
+        });
+
+        let rangeStart, rangeEnd, rangeLabel;
+
+        if (selectedYear !== null) {
+            rangeStart = new Date(selectedYear, 0, 1);
+            rangeEnd = new Date(selectedYear, 11, 31, 23, 59, 59);
+            rangeLabel = `in ${selectedYear}`;
+        } else {
+            rangeEnd = new Date();
+            rangeStart = new Date(rangeEnd);
+            rangeStart.setFullYear(rangeStart.getFullYear() - 1);
+            rangeStart.setHours(0, 0, 0, 0);
+            rangeLabel = 'in the last year';
+        }
+
+        const dayCounts = {};
+        let totalContribs = 0;
+
+        allItems.forEach(item => {
+            const d = item.createdAt || item.lastModified;
+            if (!d) return;
+            const dt = new Date(d);
+            if (dt < rangeStart || dt > rangeEnd) return;
+            const key = formatLocalDateKey(dt);
+            dayCounts[key] = (dayCounts[key] || 0) + 1;
+            totalContribs++;
+        });
+
+        els.contribSection.style.display = 'block';
+        els.contribTotal.innerHTML = `<span>${totalContribs}</span> contributions ${rangeLabel}`;
+
+        const startDate = new Date(rangeStart);
+        startDate.setDate(startDate.getDate() - startDate.getDay());
+        const endDate = new Date(rangeEnd);
+        const totalDays = Math.ceil((endDate - startDate) / 86400000) + 1;
+        const maxCount = Math.max(1, ...Object.values(dayCounts));
+
+        const mapEl = els.contribMap;
+        mapEl.innerHTML = '';
+
+        const fragment = document.createDocumentFragment();
+        const monthLabels = [];
+        let lastMonth = -1;
+
+        for (let i = 0; i < totalDays; i++) {
+            const d = new Date(startDate);
+            d.setDate(d.getDate() + i);
+            const key = formatLocalDateKey(d);
+            const count = dayCounts[key] || 0;
+            let level = 0;
+
+            if (count > 0) {
+                const ratio = count / maxCount;
+                if (ratio <= 0.25) level = 1;
+                else if (ratio <= 0.5) level = 2;
+                else if (ratio <= 0.75) level = 3;
+                else level = 4;
+            }
+
+            const cell = document.createElement('div');
+            cell.className = 'contrib-cell';
+            cell.setAttribute('data-level', level);
+            cell.setAttribute('data-date', key);
+            cell.setAttribute('data-count', count);
+            fragment.appendChild(cell);
+
+            if (i % 7 === 0) {
+                const m = d.getMonth();
+                if (m !== lastMonth) {
+                    monthLabels.push({ month: m, col: Math.floor(i / 7) });
+                    lastMonth = m;
+                }
+            }
+        }
+
+        mapEl.appendChild(fragment);
+
+        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let monthHtml = '', labelCol = 0;
+
+        for (const ml of monthLabels) {
+            const gap = ml.col - labelCol;
+            for (let g = 0; g < gap; g++) monthHtml += '<span></span>';
+            monthHtml += `<span>${MONTHS[ml.month]}</span>`;
+            labelCol = ml.col + 1;
+        }
+
+        els.contribMonths.innerHTML = monthHtml;
+        bindContribTooltip(mapEl);
+    }
+
+    function renderProfileSocial() {
+        const u = state.username;
+        const p = state.profile;
+        const followers = p?.numFollowers ?? 0;
+        const memberOrgsCount = Array.isArray(p?.orgs) ? p.orgs.length : 0;
+        let socialHtml = '';
+
+        socialHtml += `<a class="social-stat" href="${HF_BASE}/${encodeURIComponent(u)}?followers=true" target="_blank" rel="noopener" title="${formatNumFull(followers)} followers"><i class="fas fa-users"></i> <span class="social-num">${formatNum(followers)}</span> followers</a>`;
+
+        if (memberOrgsCount > 0) {
+            socialHtml += `<span class="social-stat" title="Member of ${memberOrgsCount} organizations"><i class="fas fa-building"></i> <span class="social-num">${memberOrgsCount}</span> orgs</span>`;
+        }
+
+        els.profileSocial.innerHTML = socialHtml;
+    }
+
+    function setActiveTab(tab) {
+        state.activeTab = tab;
+        state.activeFilter = (tab === 'spaces') ? 'likes' : 'recent';
+        state.filterText = '';
+
+        els.tabBar.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.className = 'tab-btn';
+            if (btn.dataset.tab === tab) {
+                btn.classList.add('active-tab');
+            }
+        });
+
+        [els.overviewModels, els.overviewDatasets, els.overviewSpaces].forEach(c => c.classList.remove('active-card'));
+        if (tab === 'models') els.overviewModels.classList.add('active-card');
+        else if (tab === 'datasets') els.overviewDatasets.classList.add('active-card');
+        else els.overviewSpaces.classList.add('active-card');
+
+        renderStats();
+        renderFilters();
+        renderTree();
+    }
+
+    function renderStats() {
+        const tab = state.activeTab;
+        const items = tab === 'models' ? state.models : tab === 'datasets' ? state.datasets : state.spaces;
+        const totalDlAllTime = items.reduce((s, i) => s + getLifetimeDownloads(i), 0);
+        const totalDlMonthly = items.reduce((s, i) => s + getMonthlyDownloads(i), 0);
+        const totalLk = items.reduce((s, i) => s + getItemLikes(i), 0);
+
+        let html = `
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-hashtag"></i></div>
+                <div>
+                    <div class="stat-value">${formatNum(items.length)}</div>
+                    <div class="stat-label">total ${tab}</div>
+                </div>
+            </div>`;
+
+        if (tab !== 'spaces') {
+            html += `
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-download"></i></div>
+                    <div>
+                        <div class="stat-value" title="${formatNumFull(totalDlAllTime)} all-time downloads">${formatNum(totalDlAllTime)}</div>
+                        <div class="stat-label">downloads (all time)</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+                    <div>
+                        <div class="stat-value" title="${formatNumFull(totalDlMonthly)} downloads last month">${formatNum(totalDlMonthly)}</div>
+                        <div class="stat-label">downloads (last month)</div>
+                    </div>
+                </div>`;
+        }
+
+        html += `
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-heart"></i></div>
+                <div>
+                    <div class="stat-value" title="${formatNumFull(totalLk)} total likes">${formatNum(totalLk)}</div>
+                    <div class="stat-label">total likes</div>
+                </div>
+            </div>`;
+
+        els.statsRow.innerHTML = html;
+    }
+
+    function renderFilters() {
+        const tab = state.activeTab;
+        let filters;
+
+        if (tab === 'models' || tab === 'datasets') {
+            filters = [
+                { key: 'recent', label: 'most recent' },
+                { key: 'downloads-alltime', label: 'downloads (all time)' },
+                { key: 'downloads-monthly', label: 'downloads (monthly)' },
+                { key: 'likes', label: 'most liked' },
+            ];
+        } else {
+            filters = [
+                { key: 'likes', label: 'most liked' },
+                { key: 'least-likes', label: 'least liked' },
+            ];
+        }
+
+        let html = '<span class="filter-label">sort:</span>';
+        for (const f of filters) {
+            html += `<button class="filter-pill ${state.activeFilter === f.key ? 'active' : ''}" data-filter="${f.key}">${f.label}</button>`;
+        }
+        html += `
+            <div class="filter-search">
+                <span class="filter-search-icon"><i class="fas fa-search"></i></span>
+                <input type="text" id="treeFilter" placeholder="filter by name..." value="${escapeHtml(state.filterText)}">
+            </div>`;
+
+        els.filterBar.innerHTML = html;
+
+        els.filterBar.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                state.activeFilter = btn.dataset.filter;
+                renderFilters();
+                renderTree();
+            });
+        });
+
+        const fi = $('treeFilter');
+        if (fi) fi.addEventListener('input', e => { state.filterText = e.target.value.trim().toLowerCase(); renderTree(); });
+    }
+
+    function getSortedItems() {
+        const tab = state.activeTab;
+        let items = [...(tab === 'models' ? state.models : tab === 'datasets' ? state.datasets : state.spaces)];
+
+        if (state.filterText) {
+            items = items.filter(i => (i.id || i.modelId || '').toLowerCase().includes(state.filterText));
+        }
+
+        items.sort((a, b) => {
+            switch (state.activeFilter) {
+                case 'downloads-alltime': return getLifetimeDownloads(b) - getLifetimeDownloads(a);
+                case 'downloads-monthly': return getMonthlyDownloads(b) - getMonthlyDownloads(a);
+                case 'likes': return getItemLikes(b) - getItemLikes(a);
+                case 'least-likes': return getItemLikes(a) - getItemLikes(b);
+                case 'recent': return new Date(b.lastModified || b.createdAt || 0) - new Date(a.lastModified || a.createdAt || 0);
+                default: return 0;
+            }
+        });
+        return items;
+    }
+
+    function getItemName(item) {
+        const id = item.id || item.modelId || '';
+        const parts = id.split('/');
+        return parts.length > 1 ? parts.slice(1).join('/') : id;
+    }
+
+    function getItemUrl(item, tab) {
+        const id = item.id || item.modelId || '';
+        if (tab === 'datasets') return `${HF_BASE}/datasets/${id}`;
+        if (tab === 'spaces') return `${HF_BASE}/spaces/${id}`;
+        return `${HF_BASE}/${id}`;
+    }
+
+    function renderTree() {
+        const tab = state.activeTab;
+        const items = getSortedItems();
+        const tabLabel = tab.charAt(0).toUpperCase() + tab.slice(1);
+
+        els.treeTitle.textContent = `${state.username} / ${tabLabel} (${items.length})`;
+        els.lineNumbers.innerHTML = '';
+        els.treeContent.innerHTML = '';
+
+        if (items.length === 0) {
+            els.treeContent.innerHTML = `<div class="no-data">no ${tab} found.</div>`;
+            return;
+        }
+
+        const fragL = document.createDocumentFragment();
+        const fragT = document.createDocumentFragment();
+
+        const rL = document.createElement('div');
+        rL.textContent = '';
+        fragL.appendChild(rL);
+
+        const rR = document.createElement('div');
+        rR.className = 'tree-line';
+        rR.style.fontWeight = '700';
+        rR.innerHTML = `<span class="t-name" style="color:#ffffff;">${escapeHtml(state.username)} — ${items.length} ${tabLabel}</span>`;
+        fragT.appendChild(rR);
+
+        items.forEach((item, idx) => {
+            const lN = document.createElement('div');
+            lN.textContent = idx + 1;
+            fragL.appendChild(lN);
+
+            const row = document.createElement('div');
+            row.className = 'tree-line';
+            row.style.animation = `fadeIn 0.12s forwards ${Math.min(idx * 6, 600)}ms`;
+            row.style.opacity = '0';
+
+            const isLast = idx === items.length - 1;
+            const conn = isLast ? '└── ' : '├── ';
+            const name = getItemName(item);
+            const url = getItemUrl(item, tab);
+            const fullId = item.id || item.modelId || '';
+
+            let nameHtml = escapeHtml(name);
+            if (state.filterText && name.toLowerCase().includes(state.filterText)) {
+                const rx = new RegExp(`(${state.filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                nameHtml = name.replace(rx, '<mark style="background:#333333;color:#ffffff;padding:0 2px;border-radius:2px;">$1</mark>');
+            }
+
+            let meta = '';
+            if (tab !== 'spaces') {
+                const dlAll = getLifetimeDownloads(item);
+                const dlMonth = getMonthlyDownloads(item);
+                const trendGraphHtml = buildDownloadTrendSparkline(item);
+
+                meta += trendGraphHtml;
+
+                if (state.activeFilter === 'downloads-monthly') {
+                    meta += `<span class="t-stat" title="${formatNumFull(dlMonth)} downloads (last month)"><i class="fas fa-calendar-alt"></i> ${formatNum(dlMonth)}</span>`;
+                } else {
+                    meta += `<span class="t-stat" title="${formatNumFull(dlAll)} downloads (all time)"><i class="fas fa-download"></i> ${formatNum(dlAll)}</span>`;
+                }
+            }
+
+            const likes = getItemLikes(item);
+            meta += `<span class="t-stat" title="${formatNumFull(likes)} likes"><i class="fas fa-heart"></i> ${formatNum(likes)}</span>`;
+            if (item.lastModified) {
+                meta += `<span class="t-stat" title="${new Date(item.lastModified).toLocaleDateString()}"><i class="far fa-clock"></i> ${relativeTime(item.lastModified)}</span>`;
+            }
+
+            row.innerHTML = `
+                <span class="t-prefix">${conn}</span>
+                <span class="t-name"><a href="${url}" target="_blank" rel="noopener" title="${escapeHtml(fullId)}">${nameHtml}</a></span>
+                <span class="t-meta">
+                    ${meta}
+                    <button class="t-copy" data-id="${escapeHtml(fullId)}" title="Copy ID"><i class="far fa-copy"></i></button>
+                </span>`;
+            fragT.appendChild(row);
+        });
+
+        els.lineNumbers.appendChild(fragL);
+        els.treeContent.appendChild(fragT);
+
+        els.treeContent.onclick = function(e) {
+            const btn = e.target.closest('.t-copy');
+            if (!btn) return;
+            navigator.clipboard.writeText(btn.dataset.id).then(() => {
+                const ic = btn.querySelector('i');
+                const orig = ic.className;
+                ic.className = 'fas fa-check'; ic.style.color = '#ffffff';
+                setTimeout(() => { ic.className = orig; ic.style.color = ''; }, 1500);
+            });
+        };
+    }
+
+    // ==========================================
+    // 5. @github Rendering Functions
+    // ==========================================
+
+    function renderGitHubSection() {
+        renderGitHubProfileCard();
+        renderGitHubContribMap();
+        renderGitHubStatsRow();
+        renderGitHubFilters();
+        renderGitHubTree();
+    }
+
+    function renderGitHubProfileCard() {
+        const u = ghState.username;
+        const p = ghState.profile || GH_FALLBACK_PROFILE;
+        const repos = ghState.repos.length > 0 ? ghState.repos : GH_FALLBACK_REPOS;
+
+        els.ghProfileUsername.textContent = p?.login || u;
+        els.ghProfileLink.href = p?.html_url || `${GH_BASE}/${u}`;
+
+        const fullname = p?.name || 'Prithiv Sakthi';
+        els.ghProfileFullname.textContent = fullname;
+
+        const bio = p?.bio || '';
+        els.ghProfileBio.textContent = bio;
+        els.ghProfileBio.style.display = bio ? 'block' : 'none';
+
+        const followers = p?.followers ?? 0;
+        const following = p?.following ?? 0;
+        const publicRepos = Math.max(p?.public_repos ?? 0, repos.length);
+        const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+
+        els.ghProfileSocial.innerHTML = `
+            <a class="social-stat" href="${GH_BASE}/${encodeURIComponent(u)}?tab=followers" target="_blank" rel="noopener" title="${formatNumFull(followers)} followers">
+                <i class="fas fa-users"></i> <span class="social-num">${formatNum(followers)}</span> followers
+            </a>
+            <a class="social-stat" href="${GH_BASE}/${encodeURIComponent(u)}?tab=following" target="_blank" rel="noopener" title="${formatNumFull(following)} following">
+                <i class="fas fa-user-friends"></i> <span class="social-num">${formatNum(following)}</span> following
+            </a>
+            <a class="social-stat" href="${GH_BASE}/${encodeURIComponent(u)}?tab=repositories" target="_blank" rel="noopener" title="${formatNumFull(publicRepos)} public repositories">
+                <i class="fas fa-code-branch"></i> <span class="social-num">${formatNum(publicRepos)}</span> repos
+            </a>
+            <span class="social-stat" title="${formatNumFull(totalStars)} total repository stars">
+                <i class="fas fa-star"></i> <span class="social-num">${formatNum(totalStars)}</span> stars
+            </span>
+        `;
+    }
+
+    function renderGitHubContribMap(yearOverride) {
+        const apiContribs = Array.isArray(ghState.contributions) ? ghState.contributions : [];
+        const repos = Array.isArray(ghState.repos) && ghState.repos.length > 0 ? ghState.repos : GH_FALLBACK_REPOS;
+
+        const dailyMap = {};
+        const yearsSet = new Set();
+
+        if (apiContribs.length > 0) {
+            apiContribs.forEach(entry => {
+                if (!entry || !entry.date) return;
+                const count = Number(entry.count) || 0;
+                const level = entry.level != null ? Number(entry.level) : null;
+                dailyMap[entry.date] = { count, level };
+                if (count > 0) {
+                    const y = parseInt(entry.date.slice(0, 4), 10);
+                    if (!isNaN(y)) yearsSet.add(y);
+                }
+            });
+        } else if (repos.length > 0) {
+            repos.forEach(r => {
+                [r.created_at, r.pushed_at, r.updated_at].filter(Boolean).forEach(ts => {
+                    const dt = new Date(ts);
+                    if (isNaN(dt.getTime())) return;
+                    const key = formatLocalDateKey(dt);
+                    if (!dailyMap[key]) dailyMap[key] = { count: 0, level: null };
+                    dailyMap[key].count += 1;
+                    yearsSet.add(dt.getFullYear());
+                });
+            });
+        }
+
+        if (Object.keys(dailyMap).length === 0) {
+            els.ghContribSection.style.display = 'none';
+            return;
+        }
+
+        const years = [...yearsSet].sort((a, b) => b - a);
+        const selectedYear = yearOverride !== undefined ? yearOverride : ghState.contribYear;
+        ghState.contribYear = selectedYear;
+
+        let yearsHtml = `<button class="contrib-year-btn ${selectedYear === null ? 'active' : ''}" data-gh-year="">last 12 months</button>`;
+        years.forEach(y => {
+            yearsHtml += `<button class="contrib-year-btn ${selectedYear === y ? 'active' : ''}" data-gh-year="${y}">${y}</button>`;
+        });
+        els.ghContribYears.innerHTML = yearsHtml;
+
+        els.ghContribYears.querySelectorAll('.contrib-year-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const y = btn.dataset.ghYear;
+                renderGitHubContribMap(y === '' ? null : parseInt(y, 10));
+            });
+        });
+
+        let rangeStart, rangeEnd, rangeLabel;
+
+        if (selectedYear !== null) {
+            rangeStart = new Date(selectedYear, 0, 1);
+            rangeEnd = new Date(selectedYear, 11, 31, 23, 59, 59);
+            rangeLabel = `in ${selectedYear}`;
+        } else {
+            rangeEnd = new Date();
+            rangeStart = new Date(rangeEnd);
+            rangeStart.setFullYear(rangeStart.getFullYear() - 1);
+            rangeStart.setHours(0, 0, 0, 0);
+            rangeLabel = 'in the last year';
+        }
+
+        const rangeStartKey = formatLocalDateKey(rangeStart);
+        const rangeEndKey = formatLocalDateKey(rangeEnd);
+
+        let totalContribs = 0;
+        let maxCountInRange = 1;
+
+        Object.entries(dailyMap).forEach(([key, val]) => {
+            if (key >= rangeStartKey && key <= rangeEndKey) {
+                totalContribs += val.count;
+                if (val.count > maxCountInRange) maxCountInRange = val.count;
+            }
+        });
+
+        els.ghContribSection.style.display = 'block';
+        els.ghContribTotal.innerHTML = `<span>${formatNumFull(totalContribs)}</span> contributions ${rangeLabel}`;
+
+        const startDate = new Date(rangeStart);
+        startDate.setDate(startDate.getDate() - startDate.getDay());
+        const endDate = new Date(rangeEnd);
+        const totalDays = Math.ceil((endDate - startDate) / 86400000) + 1;
+
+        const mapEl = els.ghContribMap;
+        mapEl.innerHTML = '';
+
+        const fragment = document.createDocumentFragment();
+        const monthLabels = [];
+        let lastMonth = -1;
+
+        for (let i = 0; i < totalDays; i++) {
+            const d = new Date(startDate);
+            d.setDate(d.getDate() + i);
+            const key = formatLocalDateKey(d);
+            const inSelectedWindow = key >= rangeStartKey && key <= rangeEndKey;
+            const entry = inSelectedWindow ? dailyMap[key] : null;
+            const count = entry ? entry.count : 0;
+            let level = 0;
+
+            if (count > 0) {
+                if (entry && entry.level != null && entry.level >= 1 && entry.level <= 4) {
+                    level = entry.level;
+                } else {
+                    const ratio = count / maxCountInRange;
+                    if (ratio <= 0.25) level = 1;
+                    else if (ratio <= 0.5) level = 2;
+                    else if (ratio <= 0.75) level = 3;
+                    else level = 4;
+                }
+            }
+
+            const cell = document.createElement('div');
+            cell.className = 'contrib-cell';
+            cell.setAttribute('data-level', level);
+            cell.setAttribute('data-date', key);
+            cell.setAttribute('data-count', count);
+            fragment.appendChild(cell);
+
+            if (i % 7 === 0) {
+                const m = d.getMonth();
+                if (m !== lastMonth) {
+                    monthLabels.push({ month: m, col: Math.floor(i / 7) });
+                    lastMonth = m;
+                }
+            }
+        }
+
+        mapEl.appendChild(fragment);
+
+        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        let monthHtml = '', labelCol = 0;
+
+        for (const ml of monthLabels) {
+            const gap = ml.col - labelCol;
+            for (let g = 0; g < gap; g++) monthHtml += '<span></span>';
+            monthHtml += `<span>${MONTHS[ml.month]}</span>`;
+            labelCol = ml.col + 1;
+        }
+
+        els.ghContribMonths.innerHTML = monthHtml;
+        bindContribTooltip(mapEl);
+    }
+
+    function renderGitHubStatsRow() {
+        const repos = ghState.repos.length > 0 ? ghState.repos : GH_FALLBACK_REPOS;
+        const totalRepos = Math.max(ghState.profile?.public_repos ?? 0, repos.length);
+        const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+        const totalForks = repos.reduce((sum, r) => sum + (r.forks_count || 0), 0);
+
+        const langCounts = {};
+        repos.forEach(r => {
+            if (r.language) {
+                langCounts[r.language] = (langCounts[r.language] || 0) + 1;
+            }
+        });
+        const topLangEntry = Object.entries(langCounts).sort((a, b) => b[1] - a[1])[0];
+        const topLang = topLangEntry ? topLangEntry[0] : 'Python';
+
+        els.ghStatsRow.innerHTML = `
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div>
+                    <div class="stat-value">${formatNum(totalRepos)}</div>
+                    <div class="stat-label">total repositories</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-star"></i></div>
+                <div>
+                    <div class="stat-value" title="${formatNumFull(totalStars)} total stars">${formatNum(totalStars)}</div>
+                    <div class="stat-label">total stars</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-code-branch"></i></div>
+                <div>
+                    <div class="stat-value" title="${formatNumFull(totalForks)} total forks">${formatNum(totalForks)}</div>
+                    <div class="stat-label">total forks</div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-terminal"></i></div>
+                <div>
+                    <div class="stat-value">${escapeHtml(topLang)}</div>
+                    <div class="stat-label">top language</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function renderGitHubFilters() {
+        const filters = [
+            { key: 'stars', label: 'most stars' },
+            { key: 'recent', label: 'most recent' },
+            { key: 'forks', label: 'most forks' },
+            { key: 'name', label: 'name (a-z)' },
+        ];
+
+        let html = '<span class="filter-label">sort:</span>';
+        for (const f of filters) {
+            html += `<button class="filter-pill ${ghState.activeFilter === f.key ? 'active' : ''}" data-gh-filter="${f.key}">${f.label}</button>`;
+        }
+        html += `
+            <div class="filter-search">
+                <span class="filter-search-icon"><i class="fas fa-search"></i></span>
+                <input type="text" id="ghTreeFilter" placeholder="filter by repo or lang..." value="${escapeHtml(ghState.filterText)}">
+            </div>`;
+
+        els.ghFilterBar.innerHTML = html;
+
+        els.ghFilterBar.querySelectorAll('.filter-pill').forEach(btn => {
+            btn.addEventListener('click', () => {
+                ghState.activeFilter = btn.dataset.ghFilter;
+                renderGitHubFilters();
+                renderGitHubTree();
+            });
+        });
+
+        const fi = $('ghTreeFilter');
+        if (fi) {
+            fi.addEventListener('input', e => {
+                ghState.filterText = e.target.value.trim().toLowerCase();
+                renderGitHubTree();
+            });
+        }
+    }
+
+    function getSortedGitHubRepos() {
+        const sourceRepos = ghState.repos.length > 0 ? ghState.repos : GH_FALLBACK_REPOS;
+        let items = [...sourceRepos];
+
+        if (ghState.filterText) {
+            items = items.filter(r => {
+                const nameMatch = (r.name || '').toLowerCase().includes(ghState.filterText);
+                const langMatch = (r.language || '').toLowerCase().includes(ghState.filterText);
+                const descMatch = (r.description || '').toLowerCase().includes(ghState.filterText);
+                return nameMatch || langMatch || descMatch;
+            });
+        }
+
+        items.sort((a, b) => {
+            switch (ghState.activeFilter) {
+                case 'stars':
+                    return (b.stargazers_count || 0) - (a.stargazers_count || 0) ||
+                           new Date(b.pushed_at || b.updated_at || 0) - new Date(a.pushed_at || a.updated_at || 0);
+                case 'forks':
+                    return (b.forks_count || 0) - (a.forks_count || 0) ||
+                           (b.stargazers_count || 0) - (a.stargazers_count || 0);
+                case 'recent':
+                    return new Date(b.pushed_at || b.updated_at || 0) - new Date(a.pushed_at || a.updated_at || 0);
+                case 'name':
+                    return (a.name || '').localeCompare(b.name || '');
+                default:
+                    return 0;
+            }
+        });
+
+        return items;
+    }
+
+    function renderGitHubTree() {
+        const items = getSortedGitHubRepos();
+        els.ghTreeTitle.textContent = `${ghState.username} / Repositories (${items.length})`;
+        els.ghLineNumbers.innerHTML = '';
+        els.ghTreeContent.innerHTML = '';
+
+        if (items.length === 0) {
+            els.ghTreeContent.innerHTML = '<div class="no-data">no github repositories found.</div>';
+            return;
+        }
+
+        const fragL = document.createDocumentFragment();
+        const fragT = document.createDocumentFragment();
+
+        const rL = document.createElement('div');
+        rL.textContent = '';
+        fragL.appendChild(rL);
+
+        const rR = document.createElement('div');
+        rR.className = 'tree-line';
+        rR.style.fontWeight = '700';
+        rR.innerHTML = `<span class="t-name" style="color:#ffffff;">${escapeHtml(ghState.username)} — ${items.length} Repositories</span>`;
+        fragT.appendChild(rR);
+
+        items.forEach((repo, idx) => {
+            const lN = document.createElement('div');
+            lN.textContent = idx + 1;
+            fragL.appendChild(lN);
+
+            const row = document.createElement('div');
+            row.className = 'tree-line';
+            row.style.animation = `fadeIn 0.12s forwards ${Math.min(idx * 6, 600)}ms`;
+            row.style.opacity = '0';
+
+            const isLast = idx === items.length - 1;
+            const conn = isLast ? '└── ' : '├── ';
+            const name = repo.name || '';
+            const url = repo.html_url || `${GH_BASE}/${ghState.username}/${name}`;
+            const fullId = repo.full_name || `${ghState.username}/${name}`;
+
+            let nameHtml = escapeHtml(name);
+            if (ghState.filterText && name.toLowerCase().includes(ghState.filterText)) {
+                const rx = new RegExp(`(${ghState.filterText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                nameHtml = name.replace(rx, '<mark style="background:#333333;color:#ffffff;padding:0 2px;border-radius:2px;">$1</mark>');
+            }
+
+            const langBadge = repo.language
+                ? `<span class="t-lang-badge">${escapeHtml(repo.language)}</span>`
+                : '';
+
+            const stars = repo.stargazers_count || 0;
+            const forks = repo.forks_count || 0;
+            const updated = repo.pushed_at || repo.updated_at;
+
+            let meta = `<span class="t-stat" title="${formatNumFull(stars)} stars"><i class="fas fa-star"></i> ${formatNum(stars)}</span>`;
+            meta += `<span class="t-stat" title="${formatNumFull(forks)} forks"><i class="fas fa-code-branch"></i> ${formatNum(forks)}</span>`;
+            if (updated) {
+                meta += `<span class="t-stat" title="Last pushed ${new Date(updated).toLocaleDateString()}"><i class="far fa-clock"></i> ${relativeTime(updated)}</span>`;
+            }
+
+            row.innerHTML = `
+                <span class="t-prefix">${conn}</span>
+                <span class="t-name"><a href="${url}" target="_blank" rel="noopener" title="${escapeHtml(repo.description || fullId)}">${nameHtml}</a></span>
+                ${langBadge}
+                <span class="t-meta">
+                    ${meta}
+                    <button class="t-copy" data-id="${escapeHtml(fullId)}" title="Copy Repo Path"><i class="far fa-copy"></i></button>
+                </span>`;
+            fragT.appendChild(row);
+        });
+
+        els.ghLineNumbers.appendChild(fragL);
+        els.ghTreeContent.appendChild(fragT);
+
+        els.ghTreeContent.onclick = function(e) {
+            const btn = e.target.closest('.t-copy');
+            if (!btn) return;
+            navigator.clipboard.writeText(btn.dataset.id).then(() => {
+                const ic = btn.querySelector('i');
+                const orig = ic.className;
+                ic.className = 'fas fa-check';
+                ic.style.color = '#ffffff';
+                setTimeout(() => { ic.className = orig; ic.style.color = ''; }, 1500);
+            });
+        };
+    }
+
+    // ==========================================
+    // 6. @career, @dev & @social Tree Rendering Functions
+    // ==========================================
+
+    function renderStaticTrees() {
+        renderCareerTree();
+        renderLinkTree('Dev', DEV_ITEMS, els.devTreeTitle, els.devLineNumbers, els.devTreeContent);
+        renderLinkTree('Social', SOCIAL_ITEMS, els.socialTreeTitle, els.socialLineNumbers, els.socialTreeContent);
+    }
+
+    function renderCareerTree() {
+        els.careerTreeTitle.textContent = `${state.username} / Career (${CAREER_ITEMS.length})`;
+        els.careerLineNumbers.innerHTML = '';
+        els.careerTreeContent.innerHTML = '';
+
+        const fragL = document.createDocumentFragment();
+        const fragT = document.createDocumentFragment();
+
+        const rL = document.createElement('div');
+        rL.textContent = '';
+        fragL.appendChild(rL);
+
+        const rR = document.createElement('div');
+        rR.className = 'tree-line';
+        rR.style.fontWeight = '700';
+        rR.innerHTML = `<span class="t-name" style="color:#ffffff;">${escapeHtml(state.username)} — ${CAREER_ITEMS.length} Career</span>`;
+        fragT.appendChild(rR);
+
+        CAREER_ITEMS.forEach((item, idx) => {
+            const lN = document.createElement('div');
+            lN.textContent = idx + 1;
+            fragL.appendChild(lN);
+
+            const row = document.createElement('div');
+            row.className = 'tree-line';
+            const isLast = idx === CAREER_ITEMS.length - 1;
+            const conn = isLast ? '└── ' : '├── ';
+
+            row.innerHTML = `
+                <span class="t-prefix">${conn}</span>
+                <span class="t-name">${escapeHtml(item.text)}</span>
+                <span class="t-meta">
+                    <button class="t-copy" data-copy="${escapeHtml(item.text)}" title="Copy Role"><i class="far fa-copy"></i></button>
+                </span>`;
+            fragT.appendChild(row);
+        });
+
+        els.careerLineNumbers.appendChild(fragL);
+        els.careerTreeContent.appendChild(fragT);
+
+        els.careerTreeContent.onclick = function(e) {
+            const btn = e.target.closest('.t-copy');
+            if (!btn) return;
+            navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+                const ic = btn.querySelector('i');
+                const orig = ic.className;
+                ic.className = 'fas fa-check';
+                ic.style.color = '#ffffff';
+                setTimeout(() => { ic.className = orig; ic.style.color = ''; }, 1500);
+            });
+        };
+    }
+
+    function renderLinkTree(sectionLabel, items, titleEl, lineColEl, codeColEl) {
+        titleEl.textContent = `${state.username} / ${sectionLabel} (${items.length})`;
+        lineColEl.innerHTML = '';
+        codeColEl.innerHTML = '';
+
+        const fragL = document.createDocumentFragment();
+        const fragT = document.createDocumentFragment();
+
+        const rL = document.createElement('div');
+        rL.textContent = '';
+        fragL.appendChild(rL);
+
+        const rR = document.createElement('div');
+        rR.className = 'tree-line';
+        rR.style.fontWeight = '700';
+        rR.innerHTML = `<span class="t-name" style="color:#ffffff;">${escapeHtml(state.username)} — ${items.length} ${escapeHtml(sectionLabel)}</span>`;
+        fragT.appendChild(rR);
+
+        items.forEach((item, idx) => {
+            const lN = document.createElement('div');
+            lN.textContent = idx + 1;
+            fragL.appendChild(lN);
+
+            const row = document.createElement('div');
+            row.className = 'tree-line';
+            const isLast = idx === items.length - 1;
+            const conn = isLast ? '└── ' : '├── ';
+            const rawLine = `${item.label}${item.sep}${item.url}`;
+
+            row.innerHTML = `
+                <span class="t-prefix">${conn}</span>
+                <span class="t-name">${escapeHtml(item.label)}<span class="t-sub">${escapeHtml(item.sep)}</span><a href="${escapeHtml(item.url)}" target="_blank" rel="noopener">${escapeHtml(item.url)}</a></span>
+                <span class="t-meta">
+                    <button class="t-copy" data-copy="${escapeHtml(rawLine)}" title="Copy Link"><i class="far fa-copy"></i></button>
+                </span>`;
+            fragT.appendChild(row);
+        });
+
+        lineColEl.appendChild(fragL);
+        codeColEl.appendChild(fragT);
+
+        codeColEl.onclick = function(e) {
+            const btn = e.target.closest('.t-copy');
+            if (!btn) return;
+            navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+                const ic = btn.querySelector('i');
+                const orig = ic.className;
+                ic.className = 'fas fa-check';
+                ic.style.color = '#ffffff';
+                setTimeout(() => { ic.className = orig; ic.style.color = ''; }, 1500);
+            });
+        };
+    }
+
+    // ==========================================
+    // 7. Top-Right Contents Menu & Direct Mailto Handler
+    // ==========================================
+
+    function initTocMenu() {
+        if (!els.tocBtn || !els.tocDropdown) return;
+
+        els.tocBtn.addEventListener('click', e => {
+            e.stopPropagation();
+            const isOpen = els.tocDropdown.classList.toggle('open');
+            els.tocBtn.classList.toggle('active', isOpen);
+        });
+
+        els.tocDropdown.querySelectorAll('.toc-item').forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = link.getAttribute('data-target');
+                const targetEl = document.getElementById(targetId);
+
+                els.tocDropdown.classList.remove('open');
+                els.tocBtn.classList.remove('active');
+
+                if (targetEl) {
+                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        document.addEventListener('click', e => {
+            if (els.tocWrapper && !els.tocWrapper.contains(e.target)) {
+                els.tocDropdown.classList.remove('open');
+                els.tocBtn.classList.remove('active');
+            }
+        });
+
+        // Ensure clicking [@mail] triggers mailto: directly in all browser/iframe contexts
+        if (els.directMailLink) {
+            els.directMailLink.addEventListener('click', e => {
+                e.stopPropagation();
+                window.location.href = 'mailto:prithivsakthi676@gmail.com';
+            });
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Hydrate any cached GitHub telemetry immediately so UI is populated right away
+        const cachedGh = loadGitHubCache();
+        if (cachedGh) {
+            ghState.profile = cachedGh.profile || GH_FALLBACK_PROFILE;
+            ghState.repos = cachedGh.repos || GH_FALLBACK_REPOS;
+            ghState.contributions = cachedGh.contributions || [];
+        } else {
+            ghState.profile = GH_FALLBACK_PROFILE;
+            ghState.repos = GH_FALLBACK_REPOS;
+        }
+
+        initTocMenu();
+        renderStats();
+        renderFilters();
+        renderGitHubSection();
+        renderStaticTrees();
+        fetchPortfolioTelemetry();
+
+        els.tabBar.querySelectorAll('.tab-btn').forEach(btn =>
+            btn.addEventListener('click', () => setActiveTab(btn.dataset.tab))
+        );
+
+       [els.overviewModels, els.overviewDatasets, els.overviewSpaces].forEach(card =>
+            card.addEventListener('click', () => setActiveTab(card.dataset.tab))
+        );
+    });
+    </script>
+</body>
+</html>
