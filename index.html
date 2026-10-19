@@ -425,6 +425,8 @@
             border: 1px solid #1a1a1a;
             border-radius: 3px;
             padding: 14px;
+            max-width: 100%;
+            overflow: hidden;
         }
 
         .contrib-header {
@@ -454,6 +456,8 @@
         .contrib-map-wrapper {
             overflow-x: auto;
             padding-bottom: 4px;
+            max-width: 100%;
+            -webkit-overflow-scrolling: touch;
         }
 
         .contrib-map {
@@ -509,8 +513,14 @@
             color: #555555;
             font-weight: 500;
             padding-left: 0;
+            min-width: fit-content;
         }
-        .contrib-months span { min-width: 14px; text-align: center; }
+        .contrib-months span {
+            width: 14px;
+            min-width: 14px;
+            flex-shrink: 0;
+            text-align: center;
+        }
 
         .contrib-tooltip {
             position: fixed;
@@ -1046,8 +1056,8 @@
                                 <div class="contrib-years" id="contribYears"></div>
                                 <span class="contrib-total" id="contribTotal"></span>
                             </div>
-                            <div class="contrib-months" id="contribMonths"></div>
                             <div class="contrib-map-wrapper">
+                                <div class="contrib-months" id="contribMonths"></div>
                                 <div class="contrib-map" id="contribMap"></div>
                             </div>
                             <div class="contrib-legend">less
@@ -1108,7 +1118,7 @@
                 <!-- ========================================== -->
                 <h2 class="section-subheading section-divider" id="sec-github">@github</h2>
 
-                <!-- GitHub Profile Card (No Profile Picture, With Contribution Matrix) -->
+                <!-- GitHub Profile Card -->
                 <div id="ghProfileCard" class="profile-block">
                     <div class="profile-top">
                         <div class="profile-info">
@@ -1120,28 +1130,6 @@
                             <div class="profile-fullname" id="ghProfileFullname">Prithiv Sakthi</div>
                             <div class="profile-bio-line" id="ghProfileBio"></div>
                             <div class="profile-social" id="ghProfileSocial"></div>
-                        </div>
-                    </div>
-
-                    <!-- Overall GitHub Contribution Section -->
-                    <div class="contribution-section" id="ghContribSection" style="display:none;">
-                        <div class="contrib-box">
-                            <div class="contrib-header">
-                                <span class="contrib-title">contributions</span>
-                                <div class="contrib-years" id="ghContribYears"></div>
-                                <span class="contrib-total" id="ghContribTotal"></span>
-                            </div>
-                            <div class="contrib-months" id="ghContribMonths"></div>
-                            <div class="contrib-map-wrapper">
-                                <div class="contrib-map" id="ghContribMap"></div>
-                            </div>
-                            <div class="contrib-legend">less
-                                <div class="contrib-cell" data-level="0"></div>
-                                <div class="contrib-cell" data-level="1"></div>
-                                <div class="contrib-cell" data-level="2"></div>
-                                <div class="contrib-cell" data-level="3"></div>
-                                <div class="contrib-cell" data-level="4"></div>more
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1385,7 +1373,6 @@
     const GH_USERNAME = 'PRITHIVSAKTHIUR';
     const GH_API = 'https://api.github.com';
     const GH_BASE = 'https://github.com';
-    const GH_CONTRIB_API = 'https://github-contributions-api.jogruber.de/v4';
     const GH_CACHE_KEY = 'prithiv_gh_telemetry_cache_v3';
     const GH_CACHE_TTL = 1000 * 60 * 15; // 15 minutes fresh TTL
 
@@ -1444,10 +1431,8 @@
         username: GH_USERNAME,
         profile: null,
         repos: [],
-        contributions: [],
         activeFilter: 'stars', // Default filter: most stars
         filterText: '',
-        contribYear: null,
     };
 
     const $ = id => document.getElementById(id);
@@ -1488,11 +1473,6 @@
         ghProfileFullname: $('ghProfileFullname'),
         ghProfileBio: $('ghProfileBio'),
         ghProfileSocial: $('ghProfileSocial'),
-        ghContribSection: $('ghContribSection'),
-        ghContribYears: $('ghContribYears'),
-        ghContribTotal: $('ghContribTotal'),
-        ghContribMonths: $('ghContribMonths'),
-        ghContribMap: $('ghContribMap'),
         ghStatsRow: $('ghStatsRow'),
         ghFilterBar: $('ghFilterBar'),
         ghTreeTitle: $('ghTreeTitle'),
@@ -1530,13 +1510,6 @@
     function formatNumFull(n) {
         if (n == null) return '—';
         return n.toLocaleString();
-    }
-
-    function formatLocalDateKey(d) {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
     }
 
     function relativeTime(d) {
@@ -1596,14 +1569,13 @@
         return null;
     }
 
-    function saveGitHubCache(profile, repos, contributions) {
+    function saveGitHubCache(profile, repos) {
         try {
             const existing = loadGitHubCache() || {};
             const payload = {
                 ts: Date.now(),
                 profile: profile || existing.profile || GH_FALLBACK_PROFILE,
-                repos: (Array.isArray(repos) && repos.length > 0) ? repos : (existing.repos || []),
-                contributions: (Array.isArray(contributions) && contributions.length > 0) ? contributions : (existing.contributions || [])
+                repos: (Array.isArray(repos) && repos.length > 0) ? repos : (existing.repos || [])
             };
             if (payload.repos.length > 0) {
                 localStorage.setItem(GH_CACHE_KEY, JSON.stringify(payload));
@@ -1772,34 +1744,13 @@
         return GH_FALLBACK_REPOS;
     }
 
-    async function fetchGitHubContributions(username) {
-        const cached = loadGitHubCache();
-        try {
-            const resp = await fetch(`${GH_CONTRIB_API}/${encodeURIComponent(username)}`, {
-                headers: { Accept: 'application/json' },
-                cache: 'default'
-            });
-            if (resp.ok) {
-                const data = await resp.json();
-                if (data && Array.isArray(data.contributions) && data.contributions.length > 0) {
-                    return data.contributions;
-                }
-            }
-        } catch (e) {}
-
-        if (cached && Array.isArray(cached.contributions) && cached.contributions.length > 0) {
-            return cached.contributions;
-        }
-        return [];
-    }
-
     async function fetchPortfolioTelemetry() {
         const username = DEFAULT_USERNAME;
         state.username = username;
         state.filterText = '';
 
         loaderTerminal.addLog('init', `connecting to @hf (${username}) & @github (${GH_USERNAME})`, 'OK');
-        loaderTerminal.setProgress(0.12);
+        loaderTerminal.setProgress(0.14);
 
         try {
             const uEnc = encodeURIComponent(username);
@@ -1811,52 +1762,45 @@
             const rowSpaces = loaderTerminal.addLog('GET', `hf.co/api/spaces?author=${username}`, '...');
             const rowGhUser = loaderTerminal.addLog('GET', `api.github.com/users/${GH_USERNAME}`, '...');
             const rowGhRepos = loaderTerminal.addLog('GET', `api.github.com/users/${GH_USERNAME}/repos`, '...');
-            const rowGhContrib = loaderTerminal.addLog('GET', `github.com/users/${GH_USERNAME}/contributions`, '...');
 
             const pPromise = fetchProfile(username).then(res => {
                 loaderTerminal.updateLogStatus(rowProfile, 'OK');
-                loaderTerminal.setProgress(0.22);
+                loaderTerminal.setProgress(0.26);
                 return res;
             });
 
             const mPromise = fetchAllPages(`${HF_API}/models?author=${uEnc}&limit=1000&full=true&${expandParams}`).then(res => {
                 loaderTerminal.updateLogStatus(rowModels, `${res.length} models`);
-                loaderTerminal.setProgress(0.40);
+                loaderTerminal.setProgress(0.44);
                 return res;
             });
 
             const dPromise = fetchAllPages(`${HF_API}/datasets?author=${uEnc}&limit=1000&full=true&${expandParams}`).then(res => {
                 loaderTerminal.updateLogStatus(rowDatasets, `${res.length} datasets`);
-                loaderTerminal.setProgress(0.56);
+                loaderTerminal.setProgress(0.60);
                 return res;
             });
 
             const sPromise = fetchAllPages(`${HF_API}/spaces?author=${uEnc}&limit=1000&full=true&expand[]=likes&expand[]=createdAt&expand[]=lastModified`).then(res => {
                 loaderTerminal.updateLogStatus(rowSpaces, `${res.length} spaces`);
-                loaderTerminal.setProgress(0.70);
+                loaderTerminal.setProgress(0.75);
                 return res;
             });
 
             const ghUserPromise = fetchGitHubProfile(GH_USERNAME).then(res => {
                 loaderTerminal.updateLogStatus(rowGhUser, res ? 'OK' : 'SYNC');
-                loaderTerminal.setProgress(0.80);
+                loaderTerminal.setProgress(0.86);
                 return res;
             });
 
             const ghReposPromise = fetchGitHubRepos(GH_USERNAME).then(res => {
                 loaderTerminal.updateLogStatus(rowGhRepos, `${res.length} repos`);
-                loaderTerminal.setProgress(0.88);
-                return res;
-            });
-
-            const ghContribPromise = fetchGitHubContributions(GH_USERNAME).then(res => {
-                loaderTerminal.updateLogStatus(rowGhContrib, res.length > 0 ? 'OK' : 'SYNC');
                 loaderTerminal.setProgress(0.95);
                 return res;
             });
 
-            const [profileData, models, datasets, spaces, ghProfileData, ghReposData, ghContribData] = await Promise.allSettled([
-                pPromise, mPromise, dPromise, sPromise, ghUserPromise, ghReposPromise, ghContribPromise
+            const [profileData, models, datasets, spaces, ghProfileData, ghReposData] = await Promise.allSettled([
+                pPromise, mPromise, dPromise, sPromise, ghUserPromise, ghReposPromise
             ]);
 
             state.profile = profileData.status === 'fulfilled' ? profileData.value : null;
@@ -1868,12 +1812,9 @@
             ghState.repos = (ghReposData.status === 'fulfilled' && Array.isArray(ghReposData.value) && ghReposData.value.length > 0)
                 ? ghReposData.value
                 : GH_FALLBACK_REPOS;
-            ghState.contributions = (ghContribData.status === 'fulfilled' && Array.isArray(ghContribData.value))
-                ? ghContribData.value
-                : [];
 
             // Persist valid GitHub telemetry to localStorage
-            saveGitHubCache(ghState.profile, ghState.repos, ghState.contributions);
+            saveGitHubCache(ghState.profile, ghState.repos);
 
             const modelsNeedLikes = state.models.length > 0 && state.models.every(m => getItemLikes(m) === 0);
             const datasetsNeedLikes = state.datasets.length > 0 && state.datasets.every(d => getItemLikes(d) === 0);
@@ -1977,22 +1918,6 @@
         els.tabSpaceCount.textContent = state.spaces.length;
     }
 
-    function bindContribTooltip(mapEl) {
-        const tooltip = els.contribTooltip;
-        mapEl.onmouseover = e => {
-            const cell = e.target.closest('.contrib-cell');
-            if (!cell) { tooltip.style.display = 'none'; return; }
-            const date = cell.dataset.date, count = cell.dataset.count;
-            const dateStr = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            tooltip.innerHTML = `<strong>${count}</strong> contribution${count !== '1' ? 's' : ''} on ${dateStr}`;
-            tooltip.style.display = 'block';
-            const rect = cell.getBoundingClientRect();
-            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
-        };
-        mapEl.onmouseleave = () => { tooltip.style.display = 'none'; };
-    }
-
     function renderContribMap(yearOverride) {
         const allItems = [...state.models, ...state.datasets, ...state.spaces];
 
@@ -2048,7 +1973,7 @@
             if (!d) return;
             const dt = new Date(d);
             if (dt < rangeStart || dt > rangeEnd) return;
-            const key = formatLocalDateKey(dt);
+            const key = dt.toISOString().slice(0, 10);
             dayCounts[key] = (dayCounts[key] || 0) + 1;
             totalContribs++;
         });
@@ -2063,6 +1988,7 @@
         const maxCount = Math.max(1, ...Object.values(dayCounts));
 
         const mapEl = els.contribMap;
+        const tooltip = els.contribTooltip;
         mapEl.innerHTML = '';
 
         const fragment = document.createDocumentFragment();
@@ -2072,7 +1998,7 @@
         for (let i = 0; i < totalDays; i++) {
             const d = new Date(startDate);
             d.setDate(d.getDate() + i);
-            const key = formatLocalDateKey(d);
+            const key = d.toISOString().slice(0, 10);
             const count = dayCounts[key] || 0;
             let level = 0;
 
@@ -2113,7 +2039,20 @@
         }
 
         els.contribMonths.innerHTML = monthHtml;
-        bindContribTooltip(mapEl);
+
+        mapEl.onmouseover = e => {
+            const cell = e.target.closest('.contrib-cell');
+            if (!cell) { tooltip.style.display = 'none'; return; }
+            const date = cell.dataset.date, count = cell.dataset.count;
+            const dateStr = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            tooltip.innerHTML = `<strong>${count}</strong> contribution${count !== '1' ? 's' : ''} on ${dateStr}`;
+            tooltip.style.display = 'block';
+            const rect = cell.getBoundingClientRect();
+            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+        };
+
+        mapEl.onmouseleave = () => { tooltip.style.display = 'none'; };
     }
 
     function renderProfileSocial() {
@@ -2377,7 +2316,6 @@
 
     function renderGitHubSection() {
         renderGitHubProfileCard();
-        renderGitHubContribMap();
         renderGitHubStatsRow();
         renderGitHubFilters();
         renderGitHubTree();
@@ -2417,154 +2355,6 @@
                 <i class="fas fa-star"></i> <span class="social-num">${formatNum(totalStars)}</span> stars
             </span>
         `;
-    }
-
-    function renderGitHubContribMap(yearOverride) {
-        const apiContribs = Array.isArray(ghState.contributions) ? ghState.contributions : [];
-        const repos = Array.isArray(ghState.repos) && ghState.repos.length > 0 ? ghState.repos : GH_FALLBACK_REPOS;
-
-        const dailyMap = {};
-        const yearsSet = new Set();
-
-        if (apiContribs.length > 0) {
-            apiContribs.forEach(entry => {
-                if (!entry || !entry.date) return;
-                const count = Number(entry.count) || 0;
-                const level = entry.level != null ? Number(entry.level) : null;
-                dailyMap[entry.date] = { count, level };
-                if (count > 0) {
-                    const y = parseInt(entry.date.slice(0, 4), 10);
-                    if (!isNaN(y)) yearsSet.add(y);
-                }
-            });
-        } else if (repos.length > 0) {
-            repos.forEach(r => {
-                [r.created_at, r.pushed_at, r.updated_at].filter(Boolean).forEach(ts => {
-                    const dt = new Date(ts);
-                    if (isNaN(dt.getTime())) return;
-                    const key = formatLocalDateKey(dt);
-                    if (!dailyMap[key]) dailyMap[key] = { count: 0, level: null };
-                    dailyMap[key].count += 1;
-                    yearsSet.add(dt.getFullYear());
-                });
-            });
-        }
-
-        if (Object.keys(dailyMap).length === 0) {
-            els.ghContribSection.style.display = 'none';
-            return;
-        }
-
-        const years = [...yearsSet].sort((a, b) => b - a);
-        const selectedYear = yearOverride !== undefined ? yearOverride : ghState.contribYear;
-        ghState.contribYear = selectedYear;
-
-        let yearsHtml = `<button class="contrib-year-btn ${selectedYear === null ? 'active' : ''}" data-gh-year="">last 12 months</button>`;
-        years.forEach(y => {
-            yearsHtml += `<button class="contrib-year-btn ${selectedYear === y ? 'active' : ''}" data-gh-year="${y}">${y}</button>`;
-        });
-        els.ghContribYears.innerHTML = yearsHtml;
-
-        els.ghContribYears.querySelectorAll('.contrib-year-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const y = btn.dataset.ghYear;
-                renderGitHubContribMap(y === '' ? null : parseInt(y, 10));
-            });
-        });
-
-        let rangeStart, rangeEnd, rangeLabel;
-
-        if (selectedYear !== null) {
-            rangeStart = new Date(selectedYear, 0, 1);
-            rangeEnd = new Date(selectedYear, 11, 31, 23, 59, 59);
-            rangeLabel = `in ${selectedYear}`;
-        } else {
-            rangeEnd = new Date();
-            rangeStart = new Date(rangeEnd);
-            rangeStart.setFullYear(rangeStart.getFullYear() - 1);
-            rangeStart.setHours(0, 0, 0, 0);
-            rangeLabel = 'in the last year';
-        }
-
-        const rangeStartKey = formatLocalDateKey(rangeStart);
-        const rangeEndKey = formatLocalDateKey(rangeEnd);
-
-        let totalContribs = 0;
-        let maxCountInRange = 1;
-
-        Object.entries(dailyMap).forEach(([key, val]) => {
-            if (key >= rangeStartKey && key <= rangeEndKey) {
-                totalContribs += val.count;
-                if (val.count > maxCountInRange) maxCountInRange = val.count;
-            }
-        });
-
-        els.ghContribSection.style.display = 'block';
-        els.ghContribTotal.innerHTML = `<span>${formatNumFull(totalContribs)}</span> contributions ${rangeLabel}`;
-
-        const startDate = new Date(rangeStart);
-        startDate.setDate(startDate.getDate() - startDate.getDay());
-        const endDate = new Date(rangeEnd);
-        const totalDays = Math.ceil((endDate - startDate) / 86400000) + 1;
-
-        const mapEl = els.ghContribMap;
-        mapEl.innerHTML = '';
-
-        const fragment = document.createDocumentFragment();
-        const monthLabels = [];
-        let lastMonth = -1;
-
-        for (let i = 0; i < totalDays; i++) {
-            const d = new Date(startDate);
-            d.setDate(d.getDate() + i);
-            const key = formatLocalDateKey(d);
-            const inSelectedWindow = key >= rangeStartKey && key <= rangeEndKey;
-            const entry = inSelectedWindow ? dailyMap[key] : null;
-            const count = entry ? entry.count : 0;
-            let level = 0;
-
-            if (count > 0) {
-                if (entry && entry.level != null && entry.level >= 1 && entry.level <= 4) {
-                    level = entry.level;
-                } else {
-                    const ratio = count / maxCountInRange;
-                    if (ratio <= 0.25) level = 1;
-                    else if (ratio <= 0.5) level = 2;
-                    else if (ratio <= 0.75) level = 3;
-                    else level = 4;
-                }
-            }
-
-            const cell = document.createElement('div');
-            cell.className = 'contrib-cell';
-            cell.setAttribute('data-level', level);
-            cell.setAttribute('data-date', key);
-            cell.setAttribute('data-count', count);
-            fragment.appendChild(cell);
-
-            if (i % 7 === 0) {
-                const m = d.getMonth();
-                if (m !== lastMonth) {
-                    monthLabels.push({ month: m, col: Math.floor(i / 7) });
-                    lastMonth = m;
-                }
-            }
-        }
-
-        mapEl.appendChild(fragment);
-
-        const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        let monthHtml = '', labelCol = 0;
-
-        for (const ml of monthLabels) {
-            const gap = ml.col - labelCol;
-            for (let g = 0; g < gap; g++) monthHtml += '<span></span>';
-            monthHtml += `<span>${MONTHS[ml.month]}</span>`;
-            labelCol = ml.col + 1;
-        }
-
-        els.ghContribMonths.innerHTML = monthHtml;
-        bindContribTooltip(mapEl);
     }
 
     function renderGitHubStatsRow() {
@@ -2938,7 +2728,6 @@
         if (cachedGh) {
             ghState.profile = cachedGh.profile || GH_FALLBACK_PROFILE;
             ghState.repos = cachedGh.repos || GH_FALLBACK_REPOS;
-            ghState.contributions = cachedGh.contributions || [];
         } else {
             ghState.profile = GH_FALLBACK_PROFILE;
             ghState.repos = GH_FALLBACK_REPOS;
@@ -2955,7 +2744,7 @@
             btn.addEventListener('click', () => setActiveTab(btn.dataset.tab))
         );
 
-       [els.overviewModels, els.overviewDatasets, els.overviewSpaces].forEach(card =>
+        [els.overviewModels, els.overviewDatasets, els.overviewSpaces].forEach(card =>
             card.addEventListener('click', () => setActiveTab(card.dataset.tab))
         );
     });
