@@ -2,17 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Prithiv Sakthi aka [prithivMLmods]</title>
     <meta name="description" content="Portfolio & live Hugging Face + GitHub telemetry for Prithiv Sakthi (prithivMLmods / PRITHIVSAKTHIUR) — models, datasets, spaces, repositories, career, dev, and social links.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
 
         html {
             scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
         }
 
         body {
@@ -21,6 +27,7 @@
             color: #ffffff;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
+            min-height: 100dvh;
             overflow-x: hidden;
         }
 
@@ -38,15 +45,16 @@
         #logLoaderOverlay {
             position: fixed;
             inset: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
+            height: 100dvh;
             background: rgba(0, 0, 0, 0.96);
             backdrop-filter: blur(8px);
             z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            padding: 16px;
             transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         }
         #logLoaderOverlay.loader-exit {
@@ -78,13 +86,24 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 10px;
             font-size: 0.68rem;
             color: #777777;
+        }
+
+        .log-term-title {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+            flex: 1;
+            text-align: center;
         }
 
         .log-term-dots {
             display: flex;
             gap: 6px;
+            flex-shrink: 0;
         }
 
         .log-dot {
@@ -103,7 +122,7 @@
             padding: 16px;
             font-size: 0.74rem;
             line-height: 1.65;
-            min-height: 225px;
+            min-height: 220px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -115,6 +134,7 @@
             flex-direction: column;
             gap: 4px;
             color: #999999;
+            min-width: 0;
         }
 
         .log-line {
@@ -137,12 +157,14 @@
             color: #cccccc;
             overflow: hidden;
             text-overflow: ellipsis;
+            min-width: 0;
         }
 
         .log-ok {
             color: #ffffff;
             font-weight: 700;
             margin-left: auto;
+            padding-left: 8px;
             flex-shrink: 0;
         }
 
@@ -174,9 +196,11 @@
         /* ── Main Portfolio Shell ── */
         .terminal-shell {
             max-width: 1100px;
+            width: 100%;
             margin: 0 auto;
             padding: 0 0 48px 0;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
         }
@@ -186,6 +210,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 12px;
             padding: 18px 20px;
             border-bottom: 1px solid #222222;
             user-select: none;
@@ -201,18 +226,23 @@
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.02em;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .toc-wrapper {
             position: relative;
+            flex-shrink: 0;
         }
 
         .toc-btn {
             background: #0a0a0a;
             border: 1px solid #222222;
             color: #cccccc;
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 3px;
             display: flex;
             align-items: center;
@@ -232,7 +262,7 @@
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            min-width: 175px;
+            min-width: 180px;
             background: #060606;
             border: 1px solid #262626;
             border-radius: 3px;
@@ -259,7 +289,7 @@
         }
 
         .toc-item {
-            padding: 7px 12px;
+            padding: 8px 12px;
             font-size: 0.76rem;
             font-weight: 600;
             color: #aaaaaa;
@@ -288,6 +318,7 @@
             flex: 1;
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         /* ── Bio Passage Above @hf ── */
@@ -297,6 +328,7 @@
             color: #aaaaaa;
             margin-bottom: 18px;
             font-weight: 400;
+            word-break: break-word;
         }
 
         /* ── Subheadings (@hf, @github, @career, @dev, @social) ── */
@@ -334,12 +366,14 @@
             border-radius: 3px;
             padding: 20px;
             margin-bottom: 16px;
+            min-width: 0;
         }
 
         .profile-top {
             display: flex;
             align-items: center;
             gap: 16px;
+            min-width: 0;
         }
 
         .profile-avatar {
@@ -372,6 +406,7 @@
             align-items: center;
             gap: 10px;
             flex-wrap: wrap;
+            word-break: break-word;
         }
         .profile-name a { color: #ffffff; }
         .profile-name a:hover { text-decoration: underline; }
@@ -387,17 +422,18 @@
             color: #888888;
             margin-top: 6px;
             line-height: 1.5;
+            word-break: break-word;
         }
 
         .profile-social {
             display: flex;
-            gap: 16px;
+            gap: 10px 16px;
             margin-top: 8px;
             flex-wrap: wrap;
         }
 
         .social-stat {
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 6px;
             font-size: 0.75rem;
@@ -405,6 +441,7 @@
             font-weight: 500;
             cursor: pointer;
             transition: color 0.15s;
+            white-space: nowrap;
         }
         .social-stat:hover { color: #ffffff; }
         .social-stat i { font-size: 0.72rem; }
@@ -418,6 +455,7 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid #1a1a1a;
+            min-width: 0;
         }
 
         .contrib-box {
@@ -435,7 +473,7 @@
             align-items: center;
             margin-bottom: 12px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px 10px;
         }
 
         .contrib-title {
@@ -455,9 +493,10 @@
 
         .contrib-map-wrapper {
             overflow-x: auto;
-            padding-bottom: 4px;
+            padding-bottom: 6px;
             max-width: 100%;
             -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
         }
 
         .contrib-map {
@@ -477,7 +516,7 @@
             transition: transform 0.15s;
         }
         .contrib-cell:hover {
-            transform: scale(1.4);
+            transform: scale(1.35);
             z-index: 2;
             position: relative;
         }
@@ -530,9 +569,11 @@
             padding: 6px 10px;
             font-size: 0.68rem;
             pointer-events: none;
-            z-index: 100;
+            z-index: 500;
             display: none;
             color: #ffffff;
+            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.85);
         }
 
         .contrib-years {
@@ -552,6 +593,7 @@
             font-weight: 600;
             transition: all 0.15s;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .contrib-year-btn:hover { border-color: #555555; color: #aaaaaa; }
         .contrib-year-btn.active { background: #ffffff; color: #000000; border-color: #ffffff; }
@@ -570,10 +612,11 @@
             background: #0a0a0a;
             border: 1px solid #1a1a1a;
             border-radius: 3px;
-            padding: 14px;
+            padding: 14px 8px;
             text-align: center;
             transition: all 0.15s;
             cursor: pointer;
+            min-width: 0;
         }
         .overview-card:hover { border-color: #444444; }
         .overview-card.active-card {
@@ -610,7 +653,7 @@
             background: #0a0a0a;
             border: none;
             border-right: 1px solid #222222;
-            padding: 10px 14px;
+            padding: 10px 12px;
             cursor: pointer;
             font-size: 0.78rem;
             font-weight: 600;
@@ -620,6 +663,7 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.15s;
+            min-width: 0;
         }
         .tab-btn:last-child { border-right: none; }
         .tab-btn:hover { background: #111111; color: #aaaaaa; }
@@ -634,6 +678,7 @@
             border-radius: 2px;
             font-size: 0.68rem;
             font-weight: 700;
+            flex-shrink: 0;
         }
         .tab-btn.active-tab .tab-count { background: #333333; }
 
@@ -653,6 +698,12 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            min-width: 0;
+        }
+
+        .stat-card > div:last-child {
+            min-width: 0;
+            flex: 1;
         }
 
         .stat-icon {
@@ -673,6 +724,9 @@
             font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .stat-label {
@@ -681,6 +735,9 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         /* ── Filter Bar ── */
@@ -692,11 +749,20 @@
             align-items: center;
         }
 
+        .filter-pills-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+
         .filter-label {
             font-size: 0.72rem;
             color: #555555;
             font-weight: 600;
-            margin-right: 4px;
+            margin-right: 2px;
+            flex-shrink: 0;
         }
 
         .filter-pill {
@@ -710,6 +776,7 @@
             font-weight: 600;
             transition: all 0.15s;
             white-space: nowrap;
+            flex-shrink: 0;
         }
         .filter-pill:hover { border-color: #555555; color: #aaaaaa; }
         .filter-pill.active { background: #ffffff; color: #000000; border-color: #ffffff; }
@@ -726,10 +793,10 @@
             transition: border-color 0.15s;
         }
         .filter-search:focus-within { border-color: #ffffff; }
-        .filter-search-icon { color: #555555; font-size: 0.72rem; }
+        .filter-search-icon { color: #555555; font-size: 0.72rem; flex-shrink: 0; }
         .filter-search input {
-            font-size: 0.72rem;
-            width: 150px;
+            font-size: 0.75rem;
+            width: 155px;
             background: transparent;
             border: none;
             color: #ffffff;
@@ -745,6 +812,7 @@
             flex-direction: column;
             background: #000000;
             overflow: hidden;
+            min-width: 0;
         }
 
         .tree-header {
@@ -762,6 +830,9 @@
             font-size: 0.78rem;
             font-weight: 600;
             color: #666666;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .terminal-window {
@@ -771,6 +842,8 @@
             font-size: 12.5px;
             line-height: 1.7;
             max-height: 70vh;
+            -webkit-overflow-scrolling: touch;
+            position: relative;
         }
 
         .line-col {
@@ -782,6 +855,11 @@
             user-select: none;
             font-size: 0.7rem;
             font-weight: 500;
+            position: sticky;
+            left: 0;
+            background: #000000;
+            z-index: 2;
+            flex-shrink: 0;
         }
         .line-col div {
             height: 30px;
@@ -887,7 +965,7 @@
             border: none;
             color: #555555;
             cursor: pointer;
-            padding: 3px;
+            padding: 4px;
             font-size: 0.72rem;
             transition: all 0.15s;
             display: flex;
@@ -896,6 +974,11 @@
         }
         .tree-line:hover .t-copy { opacity: 1; }
         .t-copy:hover { color: #ffffff; }
+
+        /* Keep copy icon visible on touch screens */
+        @media (hover: none) {
+            .t-copy { opacity: 0.7; }
+        }
 
         .no-data {
             padding: 40px 20px;
@@ -945,30 +1028,239 @@
 
         .hidden { display: none !important; }
 
-        /* ── Responsive ── */
+        /* ── Mobile & Small Tablet Optimizations ── */
         @media (max-width: 640px) {
-            .profile-top { flex-direction: column; text-align: center; }
-            .profile-name { justify-content: center; }
-            .profile-social { justify-content: center; }
-            .overview-grid { grid-template-columns: repeat(3, 1fr); }
-            .stats-row { grid-template-columns: 1fr 1fr; }
-            .filter-bar { flex-direction: column; align-items: stretch; }
-            .filter-search { margin-left: 0; }
-            .filter-search input { width: 100%; }
-            .tab-btn { padding: 8px 6px; font-size: 0.72rem; }
-            .t-meta { gap: 6px; }
-            .tree-header { flex-direction: column; align-items: stretch; }
-            .overview-card { padding: 10px 6px; }
-            .overview-num { font-size: 1.2rem; }
-            .stat-card { padding: 10px 12px; gap: 10px; }
-            .stat-value { font-size: 1rem; }
-            .stat-icon { width: 30px; height: 30px; font-size: 0.78rem; }
-            .title-bar { padding: 14px; }
-            .title-text { font-size: 1.02rem; }
-            .term-body { padding: 14px; }
-            .bio-passage { font-size: 0.78rem; }
-            .log-term-body { font-size: 0.66rem; padding: 12px; }
-            .t-lang-badge { display: none; }
+            .terminal-shell {
+                padding-bottom: 32px;
+            }
+
+            .title-bar {
+                padding: 12px 14px;
+            }
+            .title-text {
+                font-size: 0.96rem;
+            }
+            .toc-btn {
+                width: 34px;
+                height: 34px;
+            }
+
+            .term-body {
+                padding: 14px 12px;
+            }
+
+            .bio-passage {
+                font-size: 0.78rem;
+                line-height: 1.6;
+                margin-bottom: 16px;
+            }
+
+            .section-subheading {
+                font-size: 0.9rem;
+                scroll-margin-top: 64px;
+            }
+
+            .section-divider {
+                margin-top: 28px;
+            }
+
+            .profile-block {
+                padding: 14px;
+            }
+
+            .profile-top {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            .profile-avatar {
+                width: 52px;
+                height: 52px;
+            }
+            .profile-name {
+                justify-content: center;
+                font-size: 0.95rem;
+            }
+            .profile-social {
+                justify-content: center;
+                gap: 8px 14px;
+            }
+
+            .contribution-section {
+                margin-top: 16px;
+                padding-top: 16px;
+            }
+            .contrib-box {
+                padding: 12px 10px;
+            }
+            .contrib-header {
+                gap: 8px;
+            }
+            .contrib-years {
+                order: 3;
+                width: 100%;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 2px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .contrib-years::-webkit-scrollbar {
+                display: none;
+            }
+            .contrib-year-btn {
+                padding: 4px 10px;
+                font-size: 0.66rem;
+            }
+
+            .overview-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                margin-top: 14px;
+                padding-top: 14px;
+            }
+            .overview-card {
+                padding: 10px 6px;
+            }
+            .overview-num {
+                font-size: 1.18rem;
+            }
+            .overview-label {
+                font-size: 0.62rem;
+                letter-spacing: 0.5px;
+            }
+
+            .tab-btn {
+                padding: 9px 6px;
+                font-size: 0.72rem;
+                gap: 5px;
+            }
+            .tab-count {
+                padding: 1px 6px;
+                font-size: 0.64rem;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            .stat-card {
+                padding: 10px 10px;
+                gap: 9px;
+            }
+            .stat-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.76rem;
+            }
+            .stat-value {
+                font-size: 0.96rem;
+            }
+            .stat-label {
+                font-size: 0.58rem;
+                letter-spacing: 0.3px;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .filter-pills-group {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                width: 100%;
+                padding-bottom: 2px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .filter-pills-group::-webkit-scrollbar {
+                display: none;
+            }
+            .filter-pill {
+                padding: 6px 11px;
+                font-size: 0.7rem;
+            }
+            .filter-search {
+                margin-left: 0;
+                width: 100%;
+                padding: 7px 12px;
+            }
+            .filter-search input {
+                width: 100%;
+                font-size: 0.82rem;
+            }
+
+            .tree-header {
+                padding: 9px 12px;
+            }
+            .tree-title {
+                font-size: 0.74rem;
+            }
+
+            .terminal-window {
+                font-size: 11.5px;
+                max-height: 62vh;
+            }
+            .line-col {
+                padding: 10px 6px;
+                min-width: 32px;
+                font-size: 0.64rem;
+            }
+            .code-col {
+                padding: 10px 10px;
+                min-width: max-content;
+            }
+            .tree-line {
+                padding: 0 4px;
+            }
+            .t-name {
+                min-width: 140px;
+            }
+            .t-meta {
+                gap: 8px;
+                padding-left: 10px;
+            }
+            .t-lang-badge {
+                display: none;
+            }
+            .t-copy {
+                opacity: 0.75;
+            }
+
+            .log-term-bar {
+                padding: 8px 10px;
+                font-size: 0.62rem;
+            }
+            .log-term-body {
+                font-size: 0.66rem;
+                padding: 12px;
+                min-height: 195px;
+            }
+            .log-progress-wrap {
+                font-size: 0.72rem;
+            }
+
+            .contact-footer {
+                margin-top: 32px;
+                padding: 18px 0 8px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .title-text {
+                font-size: 0.86rem;
+            }
+            .overview-num {
+                font-size: 1.05rem;
+            }
+            .stat-value {
+                font-size: 0.88rem;
+            }
+            .tab-btn {
+                font-size: 0.68rem;
+            }
         }
     </style>
 </head>
@@ -982,7 +1274,7 @@
                     <div class="log-dot"></div>
                     <div class="log-dot"></div>
                 </div>
-                <span>telemetry-sync — @prithivMLmods &amp; @PRITHIVSAKTHIUR</span>
+                <span class="log-term-title">telemetry-sync — @prithivMLmods &amp; @PRITHIVSAKTHIUR</span>
                 <span>zsh</span>
             </div>
             <div class="log-term-body">
@@ -1056,7 +1348,7 @@
                                 <div class="contrib-years" id="contribYears"></div>
                                 <span class="contrib-total" id="contribTotal"></span>
                             </div>
-                            <div class="contrib-map-wrapper">
+                            <div class="contrib-map-wrapper" id="contribMapWrapper">
                                 <div class="contrib-months" id="contribMonths"></div>
                                 <div class="contrib-map" id="contribMap"></div>
                             </div>
@@ -1462,6 +1754,7 @@
         overviewSpaces: $('overviewSpaces'),
         profileSocial: $('profileSocial'),
         contribSection: $('contribSection'),
+        contribMapWrapper: $('contribMapWrapper'),
         contribMap: $('contribMap'),
         contribMonths: $('contribMonths'),
         contribTotal: $('contribTotal'),
@@ -1918,6 +2211,39 @@
         els.tabSpaceCount.textContent = state.spaces.length;
     }
 
+    function showCellTooltip(cell) {
+        const tooltip = els.contribTooltip;
+        if (!cell) {
+            tooltip.style.display = 'none';
+            return;
+        }
+        const date = cell.dataset.date;
+        const count = cell.dataset.count;
+        const dateStr = new Date(date + 'T00:00:00').toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        tooltip.innerHTML = `<strong>${count}</strong> contribution${count !== '1' ? 's' : ''} on ${dateStr}`;
+        tooltip.style.display = 'block';
+
+        const rect = cell.getBoundingClientRect();
+        const ttWidth = tooltip.offsetWidth;
+        const ttHeight = tooltip.offsetHeight;
+        const margin = 8;
+
+        let left = rect.left + rect.width / 2 - ttWidth / 2;
+        left = Math.max(margin, Math.min(window.innerWidth - ttWidth - margin, left));
+
+        let top = rect.top - ttHeight - 8;
+        if (top < margin) {
+            top = rect.bottom + 8;
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+    }
+
     function renderContribMap(yearOverride) {
         const allItems = [...state.models, ...state.datasets, ...state.spaces];
 
@@ -2040,19 +2366,26 @@
 
         els.contribMonths.innerHTML = monthHtml;
 
+        // Auto-scroll to the rightmost (latest) weeks on mobile/scrollable containers
+        if (els.contribMapWrapper) {
+            requestAnimationFrame(() => {
+                els.contribMapWrapper.scrollLeft = els.contribMapWrapper.scrollWidth;
+            });
+        }
+
         mapEl.onmouseover = e => {
             const cell = e.target.closest('.contrib-cell');
-            if (!cell) { tooltip.style.display = 'none'; return; }
-            const date = cell.dataset.date, count = cell.dataset.count;
-            const dateStr = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-            tooltip.innerHTML = `<strong>${count}</strong> contribution${count !== '1' ? 's' : ''} on ${dateStr}`;
-            tooltip.style.display = 'block';
-            const rect = cell.getBoundingClientRect();
-            tooltip.style.left = (rect.left + rect.width / 2 - tooltip.offsetWidth / 2) + 'px';
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - 8) + 'px';
+            showCellTooltip(cell);
         };
 
-        mapEl.onmouseleave = () => { tooltip.style.display = 'none'; };
+        mapEl.onclick = e => {
+            const cell = e.target.closest('.contrib-cell');
+            showCellTooltip(cell);
+        };
+
+        mapEl.onmouseleave = () => {
+            tooltip.style.display = 'none';
+        };
     }
 
     function renderProfileSocial() {
@@ -2157,11 +2490,11 @@
             ];
         }
 
-        let html = '<span class="filter-label">sort:</span>';
+        let html = '<div class="filter-pills-group"><span class="filter-label">sort:</span>';
         for (const f of filters) {
             html += `<button class="filter-pill ${state.activeFilter === f.key ? 'active' : ''}" data-filter="${f.key}">${f.label}</button>`;
         }
-        html += `
+        html += `</div>
             <div class="filter-search">
                 <span class="filter-search-icon"><i class="fas fa-search"></i></span>
                 <input type="text" id="treeFilter" placeholder="filter by name..." value="${escapeHtml(state.filterText)}">
@@ -2412,11 +2745,11 @@
             { key: 'name', label: 'name (a-z)' },
         ];
 
-        let html = '<span class="filter-label">sort:</span>';
+        let html = '<div class="filter-pills-group"><span class="filter-label">sort:</span>';
         for (const f of filters) {
             html += `<button class="filter-pill ${ghState.activeFilter === f.key ? 'active' : ''}" data-gh-filter="${f.key}">${f.label}</button>`;
         }
-        html += `
+        html += `</div>
             <div class="filter-search">
                 <span class="filter-search-icon"><i class="fas fa-search"></i></span>
                 <input type="text" id="ghTreeFilter" placeholder="filter by repo or lang..." value="${escapeHtml(ghState.filterText)}">
@@ -2711,7 +3044,16 @@
                 els.tocDropdown.classList.remove('open');
                 els.tocBtn.classList.remove('active');
             }
+            if (!e.target.closest('.contrib-cell') && els.contribTooltip) {
+                els.contribTooltip.style.display = 'none';
+            }
         });
+
+        window.addEventListener('scroll', () => {
+            if (els.contribTooltip && els.contribTooltip.style.display === 'block') {
+                els.contribTooltip.style.display = 'none';
+            }
+        }, { passive: true });
 
         // Ensure clicking [@mail] triggers mailto: directly in all browser/iframe contexts
         if (els.directMailLink) {
